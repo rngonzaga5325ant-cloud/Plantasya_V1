@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="land_bg">#398945</color>
+    <color name="btn_c">#398945</color>
+    <color name="navbar_bg">#B8EEBD</color>
+    <color name="home_bg">#F9F7F2</color>
+    <color name="container_bg">#F7F1DE</color>
+    <color name="library_bg">#F9F7F2</color>
+    <color name="history_bg">#F9F7F2</color>
+    <color name="setting_bg">#F9F7F2</color>
+    <color name="no_bg">#00F9F2F2</color>
+
+</resources>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LibraryFrag">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/home_bg">
+
+        <ImageView
+            android:id="@+id/backgroundTree"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:alpha="0.2"
+            android:scaleType="centerInside"
+            android:src="@drawable/background_tree"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/etSearch"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_margin="16dp"
+            android:background="@drawable/tbx_container"
+            android:drawableStart="@android:drawable/ic_menu_search"
+            android:drawableTint="@color/black"
+            android:drawablePadding="8dp"
+            android:hint="Search Plant"
+            android:textColorHint="@color/black"
+            android:textColor="@color/black"
+            android:importantForAutofill="no"
+            android:inputType="text"
+            android:padding="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.047" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvPlants"
+            android:layout_width="0dp"
+            android:layout_height="700dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/llAlphabet"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etSearch"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <LinearLayout
+            android:id="@+id/llAlphabet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:background="@color/navbar_bg"
+            android:orientation="vertical"
+            android:padding="4dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/crimsontext_regular"
+                android:padding="2dp"
+                android:text="A\nB\nC\nD\nE\nF\nG\nH\nI\nJ\nK\nL\nM\nN\nO\nP\nQ\nR\nS\nT\nU\nV\nW\nX\nY\nZ"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>

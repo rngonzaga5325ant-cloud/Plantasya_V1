@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:ignore="ContentDescription"
+    tools:context=".MainActivity">
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/FrameHandler"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/btnScan"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginBottom="135dp"
+        android:background="@drawable/btn_container"
+        android:src="@drawable/ic_cam_logo"
+        app:layout_constraintBottom_toBottomOf="@+id/FrameHandler"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.050"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.050" />
+
+    <LinearLayout
+        android:id="@+id/navBottom"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:background="@color/navbar_bg"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageButton
+            android:id="@+id/btn_home"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:layout_gravity="center"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/btn_container"
+            android:src="@drawable/ic_home_logo"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+        <ImageButton
+            android:id="@+id/btn_lib"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:layout_gravity="center"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/btn_container"
+            android:src="@drawable/ic_library_logo"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btn_history"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.466"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+        <ImageButton
+            android:id="@+id/btn_history"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:layout_gravity="center"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/btn_container"
+            android:src="@drawable/ic_history_logo"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btn_user"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+        <ImageButton
+            android:id="@+id/btn_user"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:layout_gravity="center"
+            android:background="@drawable/btn_container"
+            android:src="@drawable/ic_user_logo"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

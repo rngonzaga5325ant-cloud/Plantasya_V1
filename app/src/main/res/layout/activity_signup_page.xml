@@ -64,13 +64,14 @@
             app:layout_constraintVertical_bias="0.589">
 
             <EditText
-                android:id="@+id/editText"
+                android:id="@+id/etUsername"
                 android:layout_width="275dp"
                 android:layout_height="50dp"
                 android:background="@drawable/tbx_container"
                 android:fontFamily="@font/crimsontext_regular"
                 android:hint="Username"
                 android:inputType="text"
+                android:textColorHint="@color/black"
                 android:textColor="@color/black"
                 app:layout_constraintBottom_toTopOf="@+id/textView"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -97,12 +98,14 @@
             </TextView>
 
             <EditText
+                android:id="@+id/etPassword"
                 android:layout_width="275dp"
                 android:layout_height="50dp"
                 android:background="@drawable/tbx_container"
                 android:fontFamily="@font/crimsontext_regular"
                 android:hint="Password"
                 android:inputType="textPassword"
+                android:textColorHint="@color/black"
                 android:textColor="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -147,14 +150,16 @@
             </TextView>
 
             <EditText
+                android:id="@+id/etConfirmPassword"
                 android:layout_width="275dp"
                 android:layout_height="50dp"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/tbx_container"
                 android:fontFamily="@font/crimsontext_regular"
-                android:hint="Password"
+                android:hint="Confirm Password"
                 android:inputType="textPassword"
                 android:textColor="@color/black"
+                android:textColorHint="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.505"

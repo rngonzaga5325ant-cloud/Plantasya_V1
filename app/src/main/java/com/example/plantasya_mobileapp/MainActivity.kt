@@ -4,8 +4,8 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
-import android.graphics.Color
 import android.os.Bundle
+import android.view.View
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -25,6 +25,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var btnHistory: ImageButton
     private lateinit var btnUser: ImageButton
     private lateinit var btnScan: ImageButton
+    private lateinit var sessionManager: SessionManager
 
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -38,6 +39,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        
+        sessionManager = SessionManager(this)
+        checkSession()
+
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 
@@ -61,7 +66,7 @@ class MainActivity : AppCompatActivity() {
 
         // Set DashboardFrag as the default appearing fragment and highlight Home button
         if (intent.getBooleanExtra("SHOW_SETTINGS", false)) {
-            replaceFragment(SettingsFrag(), btnUser.id)
+            replaceFragment(ProfileFrag(), btnUser.id)
         } else {
             replaceFragment(DashboardFrag(), btnHome.id)
         }
@@ -80,7 +85,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         btnUser.setOnClickListener {
-            replaceFragment(SettingsFrag(), it.id)
+            replaceFragment(ProfileFrag(), it.id)
         }
 
         btnScan.setOnClickListener {
@@ -88,19 +93,30 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        checkSession()
+    }
+
+    private fun checkSession() {
+        if (!sessionManager.isSessionValid()) {
+            Toast.makeText(this, "Session expired. Please log in again.", Toast.LENGTH_LONG).show()
+            sessionManager.clearSession()
+            val intent = Intent(this, LandPage_Activity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+            finish()
+        }
+    }
+
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         setIntent(intent)
         if (intent.getBooleanExtra("SHOW_SETTINGS", false)) {
-            replaceFragment(SettingsFrag(), btnUser.id)
+            replaceFragment(ProfileFrag(), btnUser.id)
         }
     }
 
-    /**
-     * Updates the appearance of navigation buttons based on selection.
-     * Selected: Background = btn_c, Icon = white
-     * Neutral/Unselected: Background = white, Icon = btn_c
-     */
     private fun updateNavColors(selectedId: Int) {
         val navButtons = listOf(btnHome, btnLib, btnHistory, btnUser)
         
@@ -109,11 +125,9 @@ class MainActivity : AppCompatActivity() {
 
         navButtons.forEach { button ->
             if (button.id == selectedId) {
-                // Selected state
                 button.backgroundTintList = ColorStateList.valueOf(colorBtnC)
                 button.imageTintList = ColorStateList.valueOf(colorWhite)
             } else {
-                // Neutral state
                 button.backgroundTintList = ColorStateList.valueOf(colorWhite)
                 button.imageTintList = ColorStateList.valueOf(colorBtnC)
             }
@@ -139,13 +153,27 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private fun replaceFragment(fragment: Fragment, buttonId: Int) {
+    fun replaceFragment(fragment: Fragment, buttonId: Int) {
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
+        
+        // Add slide up/down animation for PlantDetailsFragment
+        if (fragment is PlantDetailsFragment) {
+            fragmentTransaction.setCustomAnimations(
+                R.anim.slide_up,
+                R.anim.slide_down,
+                R.anim.slide_up,
+                R.anim.slide_down
+            )
+            fragmentTransaction.addToBackStack(null)
+        }
+        
         fragmentTransaction.replace(R.id.FrameHandler, fragment)
         fragmentTransaction.commit()
-        
-        // Update navigation button colors
-        updateNavColors(buttonId)
+        if (buttonId != -1) updateNavColors(buttonId)
+    }
+
+    fun setScanButtonVisibility(visibility: Int) {
+        btnScan.visibility = visibility
     }
 }

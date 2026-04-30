@@ -1,61 +1,42 @@
 package com.example.plantasya_mobileapp
 
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.switchMap
+import com.example.plantasya_mobileapp.database.AppDatabase
+import com.example.plantasya_mobileapp.database.OwnedPlant
+import com.example.plantasya_mobileapp.database.Task
+import com.example.plantasya_mobileapp.database.TaskDao
 
-class DashboardViewModel : ViewModel() {
-    val plantTasks = mapOf(
-        "Fiddle-leaf Fig" to listOf(
-            "Water once a week",
-            "Wipe leaves for dust",
-            "Check for indirect sunlight",
-            "Rotate the pot for even growth",
-            "Mist leaves for humidity",
-            "Check for root rot"
-        ),
-        "Parlor Palm" to listOf(
-            "Keep soil slightly moist",
-            "Mist leaves daily",
-            "Avoid direct sun",
-            "Fertilize once a month (spring/summer)",
-            "Trim brown leaf tips",
-            "Repot every 2-3 years"
-        ),
-        "Philodendron" to listOf(
-            "Water when top inch is dry",
-            "Provide moderate light",
-            "Clean leaves with damp cloth",
-            "Provide support for climbing",
-            "Check for yellowing leaves",
-            "Pinch stems for bushier growth"
-        ),
-        "Pothos" to listOf(
-            "Water every 1-2 weeks",
-            "Trim long vines",
-            "Low light is okay",
-            "Check for variegated leaf health",
-            "Propagate from cuttings",
-            "Clean pot from mineral buildup"
-        ),
-        "ZZ Plant" to listOf(
-            "Water once a month",
-            "Dust the leaves",
-            "Thrives in low light",
-            "Keep away from cold drafts",
-            "Check for bulbous root health",
-            "Fertilize twice a year"
-        )
-    )
+class DashboardViewModel(application: Application) : AndroidViewModel(application) {
+    private val database = AppDatabase.getDatabase(application)
+    private val ownedPlantDao = database.ownedPlantDao()
+    private val taskDao = database.taskDao()
 
-    // Store task states to retain them when switching plants or fragments
-    val taskStates = mutableMapOf<String, MutableList<Boolean>>()
+    private val _userId = MutableLiveData<Int>()
 
-    fun getTaskStatesForPlant(plantName: String): MutableList<Boolean> {
-        return taskStates.getOrPut(plantName) {
-            MutableList(plantTasks[plantName]?.size ?: 0) { false }
-        }
+    val ownedPlants: LiveData<List<OwnedPlant>> = _userId.switchMap { userId ->
+        ownedPlantDao.getOwnedPlantsByUserId(userId).asLiveData()
     }
 
-    fun updateTaskState(plantName: String, position: Int, isChecked: Boolean) {
-        taskStates[plantName]?.set(position, isChecked)
+    private val selectedPlantId = MutableLiveData<Int>()
+
+    val tasks: LiveData<List<Task>> = selectedPlantId.switchMap { plantId ->
+        taskDao.getTasksByPlantId(plantId).asLiveData()
+    }
+
+    fun setUserId(userId: Int) {
+        _userId.value = userId
+    }
+
+    fun selectPlant(plantId: Int) {
+        selectedPlantId.value = plantId
+    }
+    
+    fun updateTaskStatus(task: Task, isChecked: Boolean) {
+        // Implementation for updating task status can be added here if needed
     }
 }

@@ -46,39 +46,14 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvPlants"
-            android:layout_width="0dp"
-            android:layout_height="700dp"
-            android:layout_marginStart="50dp"
+            android:layout_width="428dp"
+            android:layout_height="607dp"
             android:layout_marginTop="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/llAlphabet"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/etSearch"
-            app:layout_constraintVertical_bias="0.0" />
-
-        <LinearLayout
-            android:id="@+id/llAlphabet"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:background="@color/navbar_bg"
-            android:orientation="vertical"
-            android:padding="4dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/crimsontext_regular"
-                android:padding="2dp"
-                android:text="A\nB\nC\nD\nE\nF\nG\nH\nI\nJ\nK\nL\nM\nN\nO\nP\nQ\nR\nS\nT\nU\nV\nW\nX\nY\nZ"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textSize="12sp" />
-        </LinearLayout>
+            app:layout_constraintVertical_bias="0.029" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

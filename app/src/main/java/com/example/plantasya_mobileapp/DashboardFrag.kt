@@ -5,18 +5,28 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
+import com.example.plantasya_mobileapp.database.AppDatabase
+import com.example.plantasya_mobileapp.database.OwnedPlant
+import kotlinx.coroutines.launch
 import kotlin.math.abs
 
 class DashboardFrag : Fragment() {
 
     private lateinit var taskAdapter: TaskAdapter
     private val viewModel: DashboardViewModel by activityViewModels()
+    private lateinit var viewPager: ViewPager2
+    private lateinit var rvTasks: RecyclerView
+    private lateinit var lblOwnPlant: TextView
+    private var currentOwnedPlants: List<OwnedPlant> = emptyList()
+    private lateinit var sessionManager: SessionManager
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -24,52 +34,20 @@ class DashboardFrag : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_dashboard, container, false)
 
-        val viewPager = view.findViewById<ViewPager2>(R.id.viewPagerCarousel)
-        val rvTasks = view.findViewById<RecyclerView>(R.id.rvTasks)
+        sessionManager = SessionManager(requireContext())
+        val userId = sessionManager.getUserId()
+        viewModel.setUserId(userId)
 
-        val images = listOf(
-            R.drawable.fiddleleaf_fig,
-            R.drawable.parlor_palm,
-            R.drawable.philodendron,
-            R.drawable.pothos,
-            R.drawable.zz
-        )
+        viewPager = view.findViewById(R.id.viewPagerCarousel)
+        rvTasks = view.findViewById(R.id.rvTasks)
+        lblOwnPlant = view.findViewById(R.id.lblOwnPlant)
 
-        val names = listOf(
-            "Fiddle-leaf Fig",
-            "Parlor Palm",
-            "Philodendron",
-            "Pothos",
-            "ZZ Plant"
-        )
-
-        val carouselAdapter = CarouselAdapter(images, names)
-        viewPager.adapter = carouselAdapter
-
-        // Setup Task RecyclerView
-        rvTasks.layoutManager = LinearLayoutManager(context)
-        taskAdapter = TaskAdapter(emptyList(), mutableListOf()) { position, isChecked ->
-            val currentPlant = names[viewPager.currentItem]
-            viewModel.updateTaskState(currentPlant, position, isChecked)
-        }
-        rvTasks.adapter = taskAdapter
-
-        // Listen for carousel changes
-        viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                super.onPageSelected(position)
-                val selectedPlant = names[position]
-                updateTasksForPlant(selectedPlant)
-            }
-        })
-
-        // Carousel visual effects
+        // Setup Carousel Visuals
         viewPager.offscreenPageLimit = 3
         viewPager.clipToPadding = false
         viewPager.clipChildren = false
-
         val transformer = CompositePageTransformer()
-        transformer.addTransformer(MarginPageTransformer(5))
+        transformer.addTransformer(MarginPageTransformer(40))
         transformer.addTransformer { page, position ->
             val r = 1 - abs(position)
             page.scaleY = 0.85f + r * 0.15f
@@ -77,12 +55,67 @@ class DashboardFrag : Fragment() {
         }
         viewPager.setPageTransformer(transformer)
 
+        // Setup Task RecyclerView
+        rvTasks.layoutManager = LinearLayoutManager(requireContext())
+        taskAdapter = TaskAdapter(emptyList(), mutableListOf()) { position, isChecked ->
+            updateTaskInDatabase(position, isChecked)
+        }
+        rvTasks.adapter = taskAdapter
+
+        observeViewModel()
+
+        // Listen for carousel changes to fetch specific tasks
+        viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                if (currentOwnedPlants.isNotEmpty()) {
+                    viewModel.selectPlant(currentOwnedPlants[position].idOwned)
+                }
+            }
+        })
+
         return view
     }
 
-    private fun updateTasksForPlant(plantName: String) {
-        val tasks = viewModel.plantTasks[plantName] ?: emptyList()
-        val states = viewModel.getTaskStatesForPlant(plantName)
-        taskAdapter.updateTasks(tasks, states)
+    private fun updateTaskInDatabase(position: Int, isChecked: Boolean) {
+        val currentTasks = viewModel.tasks.value
+        if (currentTasks != null && position < currentTasks.size) {
+            val task = currentTasks[position]
+            lifecycleScope.launch {
+                val db = AppDatabase.getDatabase(requireContext())
+                db.taskDao().update(task.copy(taskDone = isChecked))
+            }
+        }
+    }
+
+    private fun observeViewModel() {
+        // Observe Owned Plants for Carousel
+        viewModel.ownedPlants.observe(viewLifecycleOwner) { plants ->
+            currentOwnedPlants = plants
+            if (plants.isEmpty()) {
+                lblOwnPlant.text = "NO OWNED PLANTS YET"
+                viewPager.visibility = View.GONE
+                taskAdapter.updateTasks(emptyList(), mutableListOf())
+            } else {
+                lblOwnPlant.text = "OWNED PLANTS:"
+                viewPager.visibility = View.VISIBLE
+                
+                val images = plants.map { it.plantPic }
+                val names = plants.map { it.plantName ?: "Unknown" }
+                
+                val carouselAdapter = CarouselAdapter(images, names)
+                viewPager.adapter = carouselAdapter
+                
+                // Select the first plant's tasks by default
+                viewModel.selectPlant(plants[0].idOwned)
+            }
+        }
+
+        // Observe Tasks for selected plant
+        viewModel.tasks.observe(viewLifecycleOwner) { tasks ->
+            val taskNames = tasks.map { "${it.taskName} (${it.taskFrequency})" }
+            val taskStates = tasks.map { it.taskDone }.toMutableList()
+            taskAdapter.updateTasks(taskNames, taskStates)
+        }
     }
 }

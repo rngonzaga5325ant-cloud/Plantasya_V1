@@ -10,15 +10,16 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.plantasya_mobileapp.database.LibraryPlant
+import com.example.plantasya_mobileapp.database.LibraryViewModel
 import java.util.Locale
-
-data class Plant(val name: String, val scientificName: String, val imageResId: Int)
 
 sealed class LibraryItem {
     data class Header(val letter: String) : LibraryItem()
-    data class PlantItem(val plant: Plant) : LibraryItem()
+    data class PlantItem(val plant: LibraryPlant) : LibraryItem()
 }
 
 class LibraryFrag : Fragment() {
@@ -26,18 +27,7 @@ class LibraryFrag : Fragment() {
     private lateinit var rvPlants: RecyclerView
     private lateinit var etSearch: EditText
     private lateinit var adapter: LibraryAdapter
-    private val allPlants = listOf(
-        Plant("Beliz Rubber", "(Ficus elastica 'Belize')", R.drawable.beliz_rubber),
-        Plant("Cast Iron", "(Aspidistra elatior)", R.drawable.cast_iron),
-        Plant("Chinese Evergreen", "(Aglaonema)", R.drawable.chinese_evergreen),
-        Plant("Fiddleleaf Fig", "(Ficus lyrata)", R.drawable.fiddleleaf_fig),
-        Plant("Living Lace", "(Asplenium scolopendrium)", R.drawable.living_lace),
-        Plant("Parlor Palm", "(Chamaedorea elegans)", R.drawable.parlor_palm),
-        Plant("Philodendron", "(Philodendron)", R.drawable.philodendron),
-        Plant("Pothos", "(Epipremnum aureum)", R.drawable.pothos),
-        Plant("Tradescantia", "(Tradescantia)", R.drawable.tradescantia),
-        Plant("ZZ Plant", "(Zamioculcas zamiifolia)", R.drawable.zz)
-    ).sortedBy { it.name }
+    private val viewModel: LibraryViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,51 +39,57 @@ class LibraryFrag : Fragment() {
         
         setupRecyclerView()
         setupSearch()
+        observeViewModel()
         
         return view
     }
 
     private fun setupRecyclerView() {
-        adapter = LibraryAdapter(mutableListOf())
+        adapter = LibraryAdapter(mutableListOf()) { plant ->
+            openPlantDetails(plant)
+        }
         rvPlants.layoutManager = LinearLayoutManager(context)
         rvPlants.adapter = adapter
-        updateFilteredList("")
+    }
+
+    private fun openPlantDetails(plant: LibraryPlant) {
+        val fragment = PlantDetailsFragment.newInstance(plant.idLib)
+        (activity as? MainActivity)?.replaceFragment(fragment, -1)
     }
 
     private fun setupSearch() {
         etSearch.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                updateFilteredList(s.toString())
+                viewModel.setSearchQuery(s.toString())
             }
             override fun afterTextChanged(s: Editable?) {}
         })
     }
 
-    private fun updateFilteredList(query: String) {
-        val filteredPlants = if (query.isEmpty()) {
-            allPlants
-        } else {
-            allPlants.filter { it.name.lowercase(Locale.ROOT).startsWith(query.lowercase(Locale.ROOT)) }
-        }
+    private fun observeViewModel() {
+        viewModel.plants.observe(viewLifecycleOwner) { plants ->
+            val libraryItems = mutableListOf<LibraryItem>()
+            var currentLetter = ""
 
-        val libraryItems = mutableListOf<LibraryItem>()
-        var currentLetter = ""
-
-        for (plant in filteredPlants) {
-            val firstLetter = plant.name.first().uppercaseChar().toString()
-            if (firstLetter != currentLetter) {
-                currentLetter = firstLetter
-                libraryItems.add(LibraryItem.Header(currentLetter))
+            for (plant in plants) {
+                val name = plant.plantName ?: "Unknown"
+                val firstLetter = name.firstOrNull()?.uppercaseChar()?.toString() ?: "#"
+                if (firstLetter != currentLetter) {
+                    currentLetter = firstLetter
+                    libraryItems.add(LibraryItem.Header(currentLetter))
+                }
+                libraryItems.add(LibraryItem.PlantItem(plant))
             }
-            libraryItems.add(LibraryItem.PlantItem(plant))
-        }
 
-        adapter.updateItems(libraryItems)
+            adapter.updateItems(libraryItems)
+        }
     }
 
-    class LibraryAdapter(private var items: List<LibraryItem>) :
-        RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    class LibraryAdapter(
+        private var items: List<LibraryItem>,
+        private val onPlantClick: (LibraryPlant) -> Unit
+    ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         companion object {
             private const val TYPE_HEADER = 0
@@ -117,7 +113,7 @@ class LibraryFrag : Fragment() {
             return if (viewType == TYPE_HEADER) {
                 HeaderViewHolder(inflater.inflate(R.layout.item_plant_header, parent, false))
             } else {
-                PlantViewHolder(inflater.inflate(R.layout.item_plant, parent, false))
+                PlantViewHolder(inflater.inflate(R.layout.item_plant, parent, false), onPlantClick)
             }
         }
 
@@ -137,15 +133,30 @@ class LibraryFrag : Fragment() {
             }
         }
 
-        class PlantViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        class PlantViewHolder(
+            view: View,
+            private val onPlantClick: (LibraryPlant) -> Unit
+        ) : RecyclerView.ViewHolder(view) {
             private val ivPlant: ImageView = view.findViewById(R.id.ivPlant)
             private val tvPlantName: TextView = view.findViewById(R.id.tvPlantName)
             private val tvScientificName: TextView = view.findViewById(R.id.tvScientificName)
 
-            fun bind(plant: Plant) {
-                ivPlant.setImageResource(plant.imageResId)
-                tvPlantName.text = plant.name
+            fun bind(plant: LibraryPlant) {
+                tvPlantName.text = plant.plantName
                 tvScientificName.text = plant.scientificName
+                
+                // Load cover photo from database
+                plant.coverPhoto?.let { bytes ->
+                    val bitmap = BitmapConverter.byteArrayToBitmap(bytes)
+                    ivPlant.setImageBitmap(bitmap)
+                    ivPlant.visibility = View.VISIBLE
+                } ?: run {
+                    ivPlant.visibility = View.GONE
+                }
+                
+                itemView.setOnClickListener {
+                    onPlantClick(plant)
+                }
             }
         }
     }

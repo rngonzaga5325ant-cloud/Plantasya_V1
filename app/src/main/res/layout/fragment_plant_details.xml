@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#A8C4A0">
+
+    <ImageView
+        android:id="@+id/ivPlantDetail"
+        android:layout_width="match_parent"
+        android:layout_height="360dp"
+        android:background="#D9D9D9"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/btnBack"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="28dp"
+        android:background="@drawable/bg_rounded"
+        android:padding="12dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_back_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="-40dp"
+        app:cardCornerRadius="30dp"
+        app:cardElevation="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivPlantDetail">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#F9F9F4"
+            android:paddingTop="24dp">
+
+            <!-- Fixed Header Section -->
+            <TextView
+                android:id="@+id/tvPlantNameDetail"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:fontFamily="@font/crimsontext_regular"
+                android:gravity="center"
+                android:text="PLANT NAME"
+                android:textColor="@color/black"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@+id/btnOwned"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvScientificNameDetail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/crimsontext_regular"
+                android:text="(Scientific Name)"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="@+id/tvPlantNameDetail"
+                app:layout_constraintStart_toStartOf="@+id/tvPlantNameDetail"
+                app:layout_constraintTop_toBottomOf="@+id/tvPlantNameDetail" />
+
+            <ImageButton
+                android:id="@+id/btnOwned"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="24dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_owned_plant"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="24dp"
+                android:background="@color/black"
+                app:layout_constraintTop_toBottomOf="@+id/tvScientificNameDetail" />
+
+            <ImageView
+                android:id="@+id/imageViewWatermark"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:scaleType="centerInside"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:src="@drawable/background_tree" />
+            <!-- Scrollable Content Section -->
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="350dp"
+                android:layout_margin="25dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/imageViewWatermark"
+                app:layout_constraintHorizontal_bias="0.48"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.492">
+
+
+                                            <LinearLayout
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:orientation="vertical"
+                                                tools:layout_editor_absoluteX="25dp"
+                                                tools:layout_editor_absoluteY="202dp">
+
+
+                                                <TextView
+                                                    android:id="@+id/lblDescription"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:fontFamily="@font/crimsontext_regular"
+                                                    android:text="Description"
+                                                    android:textColor="@color/black"
+                                                    android:textSize="18sp"
+                                                    android:textStyle="bold"
+                                                    app:layout_constraintStart_toStartOf="parent"
+                                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                                <TextView
+                                                    android:id="@+id/tvDescriptionDetail"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:fontFamily="@font/crimsontext_regular"
+                                                    android:paddingTop="8dp"
+                                                    android:text="Plant description goes here..."
+                                                    android:textColor="@color/black"
+                                                    android:textSize="16sp"
+                                                    app:layout_constraintTop_toBottomOf="@+id/lblDescription" />
+
+                                                <TextView
+                                                    android:id="@+id/lblLight"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_marginTop="16dp"
+                                                    android:fontFamily="@font/crimsontext_regular"
+                                                    android:text="Light:"
+                                                    android:textColor="@color/black"
+                                                    android:textSize="18sp"
+                                                    android:textStyle="bold"
+                                                    app:layout_constraintStart_toStartOf="parent"
+                                                    app:layout_constraintTop_toBottomOf="@+id/tvDescriptionDetail" />
+
+                                                <TextView
+                                                    android:id="@+id/tvLightDetail"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:fontFamily="@font/crimsontext_regular"
+                                                    android:paddingTop="4dp"
+                                                    android:text="Light requirements"
+                                                    android:textColor="@color/black"
+                                                    android:textSize="16sp"
+                                                    app:layout_constraintTop_toBottomOf="@+id/lblLight" />
+
+                                                <TextView
+                                                    android:id="@+id/lblWater"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_marginTop="16dp"
+                                                    android:fontFamily="@font/crimsontext_regular"
+                                                    android:text="Water:"
+                                                    android:textColor="@color/black"
+                                                    android:textSize="18sp"
+                                                    android:textStyle="bold"
+                                                    app:layout_constraintStart_toStartOf="parent"
+                                                    app:layout_constraintTop_toBottomOf="@+id/tvLightDetail" />
+
+                                                <TextView
+                                                    android:id="@+id/tvWaterDetail"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:fontFamily="@font/crimsontext_regular"
+                                                    android:paddingTop="4dp"
+                                                    android:text="Water requirements"
+                                                    android:textColor="@color/black"
+                                                    android:textSize="16sp"
+                                                    app:layout_constraintTop_toBottomOf="@+id/lblWater" />
+
+                                                <TextView
+                                                    android:id="@+id/lblHumidity"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_marginTop="16dp"
+                                                    android:fontFamily="@font/crimsontext_regular"
+                                                    android:text="Humidity:"
+                                                    android:textColor="@color/black"
+                                                    android:textSize="18sp"
+                                                    android:textStyle="bold"
+                                                    app:layout_constraintStart_toStartOf="parent"
+                                                    app:layout_constraintTop_toBottomOf="@+id/tvWaterDetail" />
+
+                                                <TextView
+                                                    android:id="@+id/tvHumidityDetail"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:fontFamily="@font/crimsontext_regular"
+                                                    android:paddingTop="4dp"
+                                                    android:text="Humidity requirements"
+                                                    android:textColor="@color/black"
+                                                    android:textSize="16sp"
+                                                    app:layout_constraintTop_toBottomOf="@+id/lblHumidity" />
+
+                                                <TextView
+                                                    android:id="@+id/lblTemperature"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_marginTop="16dp"
+                                                    android:fontFamily="@font/crimsontext_regular"
+                                                    android:text="Temperature:"
+                                                    android:textColor="@color/black"
+                                                    android:textSize="18sp"
+                                                    android:textStyle="bold"
+                                                    app:layout_constraintStart_toStartOf="parent"
+                                                    app:layout_constraintTop_toBottomOf="@+id/tvHumidityDetail" />
+
+                                                <TextView
+                                                    android:id="@+id/tvTemperatureDetail"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:fontFamily="@font/crimsontext_regular"
+                                                    android:paddingTop="4dp"
+                                                    android:text="Temperature requirements"
+                                                    android:textColor="@color/black"
+                                                    android:textSize="16sp"
+                                                    app:layout_constraintTop_toBottomOf="@+id/lblTemperature" />
+
+                                                <TextView
+                                                    android:id="@+id/lblFertilizer"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_marginTop="16dp"
+                                                    android:fontFamily="@font/crimsontext_regular"
+                                                    android:text="Fertilizer:"
+                                                    android:textColor="@color/black"
+                                                    android:textSize="18sp"
+                                                    android:textStyle="bold"
+                                                    app:layout_constraintStart_toStartOf="parent"
+                                                    app:layout_constraintTop_toBottomOf="@+id/tvTemperatureDetail" />
+
+                                                <TextView
+                                                    android:id="@+id/tvFertilizerDetail"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:fontFamily="@font/crimsontext_regular"
+                                                    android:paddingTop="4dp"
+                                                    android:text="Fertilizer requirements"
+                                                    android:textColor="@color/black"
+                                                    android:textSize="16sp"
+                                                    app:layout_constraintTop_toBottomOf="@+id/lblFertilizer" />
+
+                                                <TextView
+                                                    android:id="@+id/lblToxicity"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_marginTop="16dp"
+                                                    android:fontFamily="@font/crimsontext_regular"
+                                                    android:text="Toxicity:"
+                                                    android:textColor="@color/black"
+                                                    android:textSize="18sp"
+                                                    android:textStyle="bold"
+                                                    app:layout_constraintStart_toStartOf="parent"
+                                                    app:layout_constraintTop_toBottomOf="@+id/tvFertilizerDetail" />
+
+                                                <TextView
+                                                    android:id="@+id/tvToxicityDetail"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:fontFamily="@font/crimsontext_regular"
+                                                    android:paddingTop="4dp"
+                                                    android:text="Toxicity info"
+                                                    android:textColor="@color/black"
+                                                    android:textSize="16sp"
+                                                    app:layout_constraintTop_toBottomOf="@+id/lblToxicity" />
+
+                                            </LinearLayout>
+            </ScrollView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

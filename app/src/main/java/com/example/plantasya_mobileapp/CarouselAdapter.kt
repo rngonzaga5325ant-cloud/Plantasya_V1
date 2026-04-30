@@ -7,7 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class CarouselAdapter(private val images: List<Int>, private val names: List<String>) :
+class CarouselAdapter(private val images: List<ByteArray?>, private val names: List<String>) :
     RecyclerView.Adapter<CarouselAdapter.CarouselViewHolder>() {
 
     class CarouselViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -22,7 +22,13 @@ class CarouselAdapter(private val images: List<Int>, private val names: List<Str
     }
 
     override fun onBindViewHolder(holder: CarouselViewHolder, position: Int) {
-        holder.imageView.setImageResource(images[position])
+        val imageBytes = images[position]
+        if (imageBytes != null) {
+            val bitmap = BitmapConverter.byteArrayToBitmap(imageBytes)
+            holder.imageView.setImageBitmap(bitmap)
+        } else {
+            holder.imageView.setImageResource(R.drawable.background_tree) // Default placeholder
+        }
         holder.textView.text = names[position]
     }
 

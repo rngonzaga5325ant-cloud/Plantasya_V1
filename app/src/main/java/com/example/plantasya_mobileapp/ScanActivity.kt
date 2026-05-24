@@ -1,14 +1,23 @@
 package com.example.plantasya_mobileapp
 
+import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.CameraSelector
+import androidx.camera.core.ImageCapture
+import androidx.camera.core.ImageCaptureException
+import androidx.camera.core.ImageProxy
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -19,6 +28,7 @@ class ScanActivity : AppCompatActivity() {
 
     private lateinit var viewFinder: PreviewView
     private lateinit var cameraExecutor: ExecutorService
+    private var imageCapture: ImageCapture? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +36,16 @@ class ScanActivity : AppCompatActivity() {
         setContentView(R.layout.activity_scan)
         
         viewFinder = findViewById(R.id.viewFinder)
+        val captureButton = findViewById<ImageButton>(R.id.capture_button)
+        val btnBack = findViewById<ImageButton>(R.id.btn_back)
+
+        btnBack.setOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
+        }
+
+        captureButton.setOnClickListener {
+            takePhoto()
+        }
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -42,26 +62,23 @@ class ScanActivity : AppCompatActivity() {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
 
         cameraProviderFuture.addListener({
-            // Used to bind the lifecycle of cameras to the lifecycle owner
             val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
 
-            // Preview
             val preview = Preview.Builder()
                 .build()
                 .also {
                     it.surfaceProvider = viewFinder.surfaceProvider
                 }
 
-            // Select back camera as a default
+            imageCapture = ImageCapture.Builder()
+                .build()
+
             val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
 
             try {
-                // Unbind use cases before rebinding
                 cameraProvider.unbindAll()
-
-                // Bind use cases to camera
                 cameraProvider.bindToLifecycle(
-                    this, cameraSelector, preview
+                    this, cameraSelector, preview, imageCapture
                 )
 
             } catch (exc: Exception) {
@@ -70,6 +87,52 @@ class ScanActivity : AppCompatActivity() {
             }
 
         }, ContextCompat.getMainExecutor(this))
+    }
+
+    private fun takePhoto() {
+        val imageCapture = imageCapture ?: return
+
+        imageCapture.takePicture(
+            ContextCompat.getMainExecutor(this),
+            object : ImageCapture.OnImageCapturedCallback() {
+                override fun onCaptureSuccess(image: ImageProxy) {
+                    val bitmap = imageProxyToBitmap(image)
+                    image.close()
+                    
+                    if (bitmap != null) {
+                        showPreview(bitmap)
+                    }
+                }
+
+                override fun onError(exc: ImageCaptureException) {
+                    Log.e(TAG, "Photo capture failed: ${exc.message}", exc)
+                }
+            }
+        )
+    }
+
+    private fun imageProxyToBitmap(image: ImageProxy): Bitmap? {
+        val buffer = image.planes[0].buffer
+        val bytes = ByteArray(buffer.remaining())
+        buffer.get(bytes)
+        return BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+    }
+
+    private fun showPreview(bitmap: Bitmap) {
+        val byteArray = BitmapConverter.bitmapToByteArray(bitmap)
+        
+        findViewById<View>(R.id.scan_container).visibility = View.GONE
+        findViewById<View>(R.id.fragment_container).visibility = View.VISIBLE
+
+        val previewFragment = ScanPreviewFragment.newInstance(byteArray)
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, previewFragment)
+            .commit()
+    }
+
+    fun showCamera() {
+        findViewById<View>(R.id.scan_container).visibility = View.VISIBLE
+        findViewById<View>(R.id.fragment_container).visibility = View.GONE
     }
 
     override fun onDestroy() {

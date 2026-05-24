@@ -174,6 +174,13 @@ class MainActivity : AppCompatActivity() {
         fragmentTransaction.replace(R.id.FrameHandler, fragment)
         fragmentTransaction.commit()
         if (buttonId != -1) updateNavColors(buttonId)
+
+        // Manage scan button visibility based on fragment
+        if (fragment is HistoryFrag ) {
+            setScanButtonVisibility(View.VISIBLE)
+        } else {
+            setScanButtonVisibility(View.GONE)
+        }
     }
 
     fun setScanButtonVisibility(visibility: Int) {

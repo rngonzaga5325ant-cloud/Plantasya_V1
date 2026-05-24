@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="8dp"
+    android:layout_margin="20dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:background="@color/white">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Remove Plant?"
+            android:textColor="@color/black"
+            android:textSize="22sp"
+            android:fontFamily="@font/crimsontext_bold"
+            android:layout_gravity="center"
+            android:layout_marginBottom="12dp" />
+
+        <TextView
+            android:id="@+id/tvRemoveMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Are you sure you want to remove this plant from your dashboard? All related tasks will also be deleted."
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:fontFamily="@font/crimsontext_regular"
+            android:textAlignment="center"
+            android:layout_gravity="center"
+            android:layout_marginBottom="24dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <Button
+                android:id="@+id/btnCancelRemove"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp"
+                android:backgroundTint="@color/white"
+                android:text="Cancel"
+                android:textColor="@color/btn_c"
+                android:fontFamily="@font/crimsontext_regular"
+                app:strokeColor="@color/btn_c"
+                app:strokeWidth="1dp" />
+
+            <Button
+                android:id="@+id/btnConfirmRemove"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:backgroundTint="@color/btn_c"
+                android:text="Remove"
+                android:textColor="@color/white"
+                android:fontFamily="@font/crimsontext_regular" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

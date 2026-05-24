@@ -10,6 +10,9 @@ data class History(
     @ColumnInfo(name = "history_id")
     val historyId: Int = 0,
 
+    @ColumnInfo(name = "user_id")
+    val userId: Int,
+
     @ColumnInfo(name = "plant_pic", typeAffinity = ColumnInfo.BLOB)
     val plantPic: ByteArray? = null,
 
@@ -18,6 +21,9 @@ data class History(
 
     @ColumnInfo(name = "plant_name")
     val plantName: String? = null,
+
+    @ColumnInfo(name = "is_owned")
+    val isOwned: Boolean = false,
 
     @ColumnInfo(name = "date_scanned")
     val dateScanned: Long = System.currentTimeMillis()

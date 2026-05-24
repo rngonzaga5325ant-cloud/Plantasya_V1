@@ -17,6 +17,9 @@ interface LibraryPlantDao {
     @Query("SELECT * FROM library_plant_tbl WHERE id_lib = :plantId LIMIT 1")
     suspend fun getPlantById(plantId: Int): LibraryPlant?
 
+    @Query("SELECT * FROM library_plant_tbl WHERE plant_name LIKE :name LIMIT 1")
+    suspend fun getPlantByName(name: String): LibraryPlant?
+
     @Query("SELECT * FROM library_plant_tbl WHERE owned = 1 ORDER BY plant_name ASC")
     fun getOwnedLibraryPlants(): Flow<List<LibraryPlant>>
 

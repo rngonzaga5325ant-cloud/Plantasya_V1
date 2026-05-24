@@ -16,7 +16,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.plantasya_mobileapp.database.AppDatabase
 import com.example.plantasya_mobileapp.database.OwnedPlant
-import com.example.plantasya_mobileapp.database.Task
 import kotlinx.coroutines.launch
 
 class PlantDetailsFragment : Fragment() {
@@ -146,103 +145,68 @@ class PlantDetailsFragment : Fragment() {
             val userId = sessionManager.getUserId()
             val plant = db.libraryPlantDao().getPlantById(plantId)
             
-            plant?.let {
+            plant?.let { libraryPlant ->
                 val existingOwned = db.ownedPlantDao().getOwnedPlantByLibraryIdAndUser(plantId, userId)
-                val isCurrentlyOwned = existingOwned != null
-                val newOwnedStatus = !isCurrentlyOwned
                 
-                if (newOwnedStatus) {
-                    // Update Button UI
-                    btnOwned.setImageResource(R.drawable.ic_owned_plant_filled)
-                    
-                    // Add to Owned Plants Table with current userId
-                    val ownedPlant = OwnedPlant(
-                        userId = userId,
-                        libraryId = it.idLib,
-                        plantName = it.plantName,
-                        scientificName = it.scientificName,
-                        plantPic = it.coverPhoto,
-                        owned = true
-                    )
-                    db.ownedPlantDao().insert(ownedPlant)
-                    
-                    // Fetch the inserted owned plant to get its generated ID
-                    val inserted = db.ownedPlantDao().getOwnedPlantByLibraryIdAndUser(it.idLib, userId)
-                    inserted?.let { owned ->
-                        // Generate Tasks
-                        generateTasksForPlant(owned.idOwned, it.plantName ?: "")
-                    }
-                    
-                    Toast.makeText(context, "${it.plantName} added to your dashboard", Toast.LENGTH_SHORT).show()
+                if (existingOwned != null) {
+                    showRemovePlantDialog(btnOwned, libraryPlant.plantName ?: "this plant")
                 } else {
-                    // Update Button UI
-                    btnOwned.setImageResource(R.drawable.ic_owned_plant)
-                    
-                    // Remove from Owned Plants (Tasks will cascade delete)
-                    db.ownedPlantDao().deleteByLibraryIdAndUser(plantId, userId)
-                    Toast.makeText(context, "${it.plantName} removed from your dashboard", Toast.LENGTH_SHORT).show()
+                    addPlantToOwned(btnOwned, libraryPlant, userId)
                 }
             }
         }
     }
 
-    private suspend fun generateTasksForPlant(ownedId: Int, plantName: String) {
-        val db = AppDatabase.getDatabase(requireContext())
-        val tasks = when (plantName) {
-            "Aglaonema" -> listOf(
-                Task(plantId = ownedId, taskName = "Watering", taskFrequency = "Every 7-10 days"),
-                Task(plantId = ownedId, taskName = "Fertilizing", taskFrequency = "Monthly (Spring/Summer)"),
-                Task(plantId = ownedId, taskName = "Leaf Cleaning", taskFrequency = "Every 2 weeks")
-            )
-            "Snake Plant" -> listOf(
-                Task(plantId = ownedId, taskName = "Watering", taskFrequency = "Every 21-30 days"),
-                Task(plantId = ownedId, taskName = "Fertilizing", taskFrequency = "Monthly (Spring/Summer)"),
-                Task(plantId = ownedId, taskName = "Check soil moisture", taskFrequency = "Every 2 weeks")
-            )
-            "Philodendron" -> listOf(
-                Task(plantId = ownedId, taskName = "Watering", taskFrequency = "Every 7 days"),
-                Task(plantId = ownedId, taskName = "Fertilizing", taskFrequency = "Monthly (Spring/Summer)"),
-                Task(plantId = ownedId, taskName = "Mist leaves", taskFrequency = "Every 3 days")
-            )
-            "Calathea" -> listOf(
-                Task(plantId = ownedId, taskName = "Watering", taskFrequency = "Every 5-7 days"),
-                Task(plantId = ownedId, taskName = "Humidity check", taskFrequency = "Daily"),
-                Task(plantId = ownedId, taskName = "Fertilizing", taskFrequency = "Monthly (Spring/Summer)")
-            )
-            "Bromeliad" -> listOf(
-                Task(plantId = ownedId, taskName = "Water central cup", taskFrequency = "Weekly"),
-                Task(plantId = ownedId, taskName = "Foliar Fertilizing", taskFrequency = "Monthly (Spring/Summer)"),
-                Task(plantId = ownedId, taskName = "Flush soil", taskFrequency = "Monthly")
-            )
-            "Peace Lily" -> listOf(
-                Task(plantId = ownedId, taskName = "Watering", taskFrequency = "Every 5-7 days"),
-                Task(plantId = ownedId, taskName = "Fertilizing", taskFrequency = "3 times per year"),
-                Task(plantId = ownedId, taskName = "Wipe leaves", taskFrequency = "Every 2 weeks")
-            )
-            "Rubber Tree" -> listOf(
-                Task(plantId = ownedId, taskName = "Watering", taskFrequency = "Every 7-14 days"),
-                Task(plantId = ownedId, taskName = "Fertilizing", taskFrequency = "Every 2-4 weeks"),
-                Task(plantId = ownedId, taskName = "Rotate plant", taskFrequency = "Monthly")
-            )
-            "Fiddle Leaf Fig" -> listOf(
-                Task(plantId = ownedId, taskName = "Watering", taskFrequency = "Weekly"),
-                Task(plantId = ownedId, taskName = "Fertilizing", taskFrequency = "Every 2-4 weeks"),
-                Task(plantId = ownedId, taskName = "Clean leaves", taskFrequency = "Weekly")
-            )
-            "Orchid" -> listOf(
-                Task(plantId = ownedId, taskName = "Watering (Soak roots)", taskFrequency = "Every 7 days"),
-                Task(plantId = ownedId, taskName = "Fertilizing", taskFrequency = "Every 4-6 weeks"),
-                Task(plantId = ownedId, taskName = "Check bark moisture", taskFrequency = "Twice weekly")
-            )
-            "Spider Plant" -> listOf(
-                Task(plantId = ownedId, taskName = "Watering", taskFrequency = "Every 7 days"),
-                Task(plantId = ownedId, taskName = "Fertilizing", taskFrequency = "Monthly (Spring/Summer)"),
-                Task(plantId = ownedId, taskName = "Prune spiderettes", taskFrequency = "As needed")
-            )
-            else -> emptyList()
+    private fun showRemovePlantDialog(btnOwned: ImageButton, plantName: String) {
+        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_remove_plant, null)
+        val dialog = AlertDialog.Builder(requireContext(), R.style.CustomDialog)
+            .setView(dialogView)
+            .create()
+
+        dialogView.findViewById<TextView>(R.id.tvRemoveMessage).text = 
+            "Are you sure you want to remove $plantName from your dashboard? All related tasks will also be deleted."
+
+        dialogView.findViewById<Button>(R.id.btnCancelRemove).setOnClickListener {
+            dialog.dismiss()
         }
 
-        tasks.forEach { db.taskDao().insert(it) }
+        dialogView.findViewById<Button>(R.id.btnConfirmRemove).setOnClickListener {
+            dialog.dismiss()
+            removePlantFromOwned(btnOwned, plantName)
+        }
+
+        dialog.show()
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+    }
+
+    private fun addPlantToOwned(btnOwned: ImageButton, libraryPlant: com.example.plantasya_mobileapp.database.LibraryPlant, userId: Int) {
+        lifecycleScope.launch {
+            val db = AppDatabase.getDatabase(requireContext())
+            btnOwned.setImageResource(R.drawable.ic_owned_plant_filled)
+            
+            val ownedPlant = OwnedPlant(
+                userId = userId,
+                libraryId = libraryPlant.idLib,
+                plantName = libraryPlant.plantName,
+                scientificName = libraryPlant.scientificName,
+                plantPic = libraryPlant.coverPhoto,
+                owned = true
+            )
+            val newId = db.ownedPlantDao().insert(ownedPlant)
+            
+            TaskSyncManager.syncTasksForPlant(requireContext(), newId.toInt(), libraryPlant.plantName ?: "")
+            Toast.makeText(context, "${libraryPlant.plantName} added to your dashboard", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun removePlantFromOwned(btnOwned: ImageButton, plantName: String) {
+        lifecycleScope.launch {
+            val db = AppDatabase.getDatabase(requireContext())
+            val userId = sessionManager.getUserId()
+            btnOwned.setImageResource(R.drawable.ic_owned_plant)
+            db.ownedPlantDao().deleteByLibraryIdAndUser(plantId, userId)
+            Toast.makeText(context, "$plantName removed from your dashboard", Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun onDestroyView() {

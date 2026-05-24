@@ -15,7 +15,7 @@ interface OwnedPlantDao {
     suspend fun getOwnedPlantByLibraryIdAndUser(libraryId: Int, userId: Int): OwnedPlant?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(plant: OwnedPlant)
+    suspend fun insert(plant: OwnedPlant): Long
 
     @Update
     suspend fun update(plant: OwnedPlant)
@@ -25,4 +25,7 @@ interface OwnedPlantDao {
 
     @Query("DELETE FROM owned_plants WHERE library_id = :libraryId AND user_id = :userId")
     suspend fun deleteByLibraryIdAndUser(libraryId: Int, userId: Int)
+
+    @Query("DELETE FROM owned_plants WHERE plant_name = :plantName AND user_id = :userId")
+    suspend fun deleteByNameAndUser(plantName: String, userId: Int)
 }

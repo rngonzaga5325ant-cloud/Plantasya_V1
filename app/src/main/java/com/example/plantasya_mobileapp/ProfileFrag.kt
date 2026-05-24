@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.plantasya_mobileapp.database.UserViewModel
@@ -59,6 +60,11 @@ class ProfileFrag : Fragment() {
         val btnTutorial = view.findViewById<Button>(R.id.btnTutorial)
         btnTutorial.setOnClickListener {
             openTutorial()
+        }
+
+        val btnAboutApp = view.findViewById<Button>(R.id.btnAboutApp)
+        btnAboutApp.setOnClickListener {
+            Toast.makeText(requireContext(), "Under development", Toast.LENGTH_SHORT).show()
         }
         return view
     }

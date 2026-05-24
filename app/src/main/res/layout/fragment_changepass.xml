@@ -22,132 +22,105 @@
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="64dp"
-        android:fontFamily="serif"
-        android:text="Change Username\n&amp; Password"
+        android:layout_marginTop="48dp"
+        android:fontFamily="@font/fustat_semb"
+        android:text="Update Credentials"
         android:textColor="@color/black"
         android:textSize="32sp"
         android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/etCurrentUsername"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardCredentials"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
-        android:layout_marginEnd="32dp"
-        android:background="@null"
-        android:fontFamily="serif"
-        android:hint="Current Username"
-        android:inputType="text"
-        android:paddingBottom="12dp"
-        android:textColor="@color/black"
-        android:textColorHint="#9E9E9E"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="24dp"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="8dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/tvTitle"
-        app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvTitle">
 
-    <View
-        android:id="@+id/line1"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:background="@color/black"
-        app:layout_constraintEnd_toEndOf="@+id/etCurrentUsername"
-        app:layout_constraintStart_toStartOf="@+id/etCurrentUsername"
-        app:layout_constraintTop_toBottomOf="@+id/etCurrentUsername" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp"
+            android:background="@color/white">
 
-    <EditText
-        android:id="@+id/etNewUsername"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:background="@null"
-        android:fontFamily="serif"
-        android:hint="New Username"
-        android:inputType="text"
-        android:paddingBottom="12dp"
-        android:textColor="@color/black"
-        android:textColorHint="#9E9E9E"
-        app:layout_constraintEnd_toEndOf="@+id/etCurrentUsername"
-        app:layout_constraintStart_toStartOf="@+id/etCurrentUsername"
-        app:layout_constraintTop_toBottomOf="@+id/line1" />
+            <EditText
+                android:id="@+id/etCurrentUsername"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/tbx_container"
+                android:fontFamily="@font/crimsontext_regular"
+                android:hint="Current Username"
+                android:inputType="text"
+                android:paddingStart="16dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                android:layout_marginBottom="16dp"/>
 
-    <View
-        android:id="@+id/line2"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:background="@color/black"
-        app:layout_constraintEnd_toEndOf="@+id/etNewUsername"
-        app:layout_constraintStart_toStartOf="@+id/etNewUsername"
-        app:layout_constraintTop_toBottomOf="@+id/etNewUsername" />
+            <EditText
+                android:id="@+id/etNewUsername"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/tbx_container"
+                android:fontFamily="@font/crimsontext_regular"
+                android:hint="New Username"
+                android:inputType="text"
+                android:paddingStart="16dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                android:layout_marginBottom="16dp"/>
 
-    <EditText
-        android:id="@+id/etCurrentPassword"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:background="@null"
-        android:fontFamily="serif"
-        android:hint="Current Password"
-        android:inputType="textPassword"
-        android:paddingBottom="12dp"
-        android:textColor="@color/black"
-        android:textColorHint="#9E9E9E"
-        app:layout_constraintEnd_toEndOf="@+id/etNewUsername"
-        app:layout_constraintStart_toStartOf="@+id/etNewUsername"
-        app:layout_constraintTop_toBottomOf="@+id/line2" />
+            <EditText
+                android:id="@+id/etCurrentPassword"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/tbx_container"
+                android:fontFamily="@font/crimsontext_regular"
+                android:hint="Current Password"
+                android:inputType="textPassword"
+                android:paddingStart="16dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                android:layout_marginBottom="16dp"/>
 
-    <View
-        android:id="@+id/line3"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:background="@color/black"
-        app:layout_constraintEnd_toEndOf="@+id/etCurrentPassword"
-        app:layout_constraintStart_toStartOf="@+id/etCurrentPassword"
-        app:layout_constraintTop_toBottomOf="@+id/etCurrentPassword" />
+            <EditText
+                android:id="@+id/etNewPassword"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/tbx_container"
+                android:fontFamily="@font/crimsontext_regular"
+                android:hint="New Password"
+                android:inputType="textPassword"
+                android:paddingStart="16dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                android:layout_marginBottom="8dp"/>
 
-    <EditText
-        android:id="@+id/etNewPassword"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:background="@null"
-        android:fontFamily="serif"
-        android:hint="New Password"
-        android:inputType="textPassword"
-        android:paddingBottom="12dp"
-        android:textColor="@color/black"
-        android:textColorHint="#9E9E9E"
-        app:layout_constraintEnd_toEndOf="@+id/etCurrentPassword"
-        app:layout_constraintStart_toStartOf="@+id/etCurrentPassword"
-        app:layout_constraintTop_toBottomOf="@+id/line3" />
-
-    <View
-        android:id="@+id/line4"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:background="@color/black"
-        app:layout_constraintEnd_toEndOf="@+id/etNewPassword"
-        app:layout_constraintStart_toStartOf="@+id/etNewPassword"
-        app:layout_constraintTop_toBottomOf="@+id/etNewPassword" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
     <Button
         android:id="@+id/btnSaveChanges"
-        android:layout_width="240dp"
+        android:layout_width="0dp"
         android:layout_height="56dp"
+        android:layout_marginTop="32dp"
         android:backgroundTint="@color/btn_c"
-        android:fontFamily="serif"
+        android:fontFamily="@font/crimsontext_bold"
         android:text="Save Changes"
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="18sp"
         app:cornerRadius="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.533" />
+        app:layout_constraintEnd_toEndOf="@+id/cardCredentials"
+        app:layout_constraintStart_toStartOf="@+id/cardCredentials"
+        app:layout_constraintTop_toBottomOf="@+id/cardCredentials" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -28,9 +27,9 @@ class SettingsFragment : Fragment() {
         
         sessionManager = SessionManager(requireContext())
 
-        val btnChangeCredentials = view.findViewById<TextView>(R.id.btnChangeCredentials)
-        val btnLogout = view.findViewById<TextView>(R.id.btnLogout)
-        val btnDeleteAccount = view.findViewById<TextView>(R.id.btnDeleteAccount)
+        val btnChangeCredentials = view.findViewById<Button>(R.id.btnChangeCredentials)
+        val btnLogout = view.findViewById<Button>(R.id.btnLogout)
+        val btnDeleteAccount = view.findViewById<Button>(R.id.btnDeleteAccount)
 
         btnChangeCredentials.setOnClickListener {
             parentFragmentManager.beginTransaction()

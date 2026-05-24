@@ -26,6 +26,10 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
         return repository.getUserByUsername(username)
     }
 
+    suspend fun getUserById(userId: Int): User? {
+        return repository.getUserById(userId)
+    }
+
     suspend fun getUsersByRole(role: String): List<User> {
         return repository.getUsersByRole(role)
     }

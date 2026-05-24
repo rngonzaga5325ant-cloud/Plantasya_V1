@@ -1,13 +1,17 @@
 package com.example.plantasya_mobileapp
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.plantasya_mobileapp.database.AppDatabase
@@ -46,6 +50,7 @@ class PlantDetailsFragment : Fragment() {
         val tvTemp = view.findViewById<TextView>(R.id.tvTemperatureDetail)
         val tvFertilizer = view.findViewById<TextView>(R.id.tvFertilizerDetail)
         val tvToxicity = view.findViewById<TextView>(R.id.tvToxicityDetail)
+        val tvVariations = view.findViewById<TextView>(R.id.tvVariationsDetail)
         val ivPlant = view.findViewById<ImageView>(R.id.ivPlantDetail)
 
         btnBack.setOnClickListener {
@@ -56,19 +61,36 @@ class PlantDetailsFragment : Fragment() {
             toggleOwnedStatus(btnOwned)
         }
 
-        loadPlantDetails(tvName, tvSciName, tvDescription, tvLight, tvWater, tvHumidity, tvTemp, tvFertilizer, tvToxicity, ivPlant, btnOwned)
-
-        // Hide Scan Button in MainActivity
-        (activity as? MainActivity)?.setScanButtonVisibility(View.GONE)
+        loadPlantDetails(tvName, tvSciName, tvDescription, tvLight, tvWater, tvHumidity, tvTemp, tvFertilizer, tvToxicity, tvVariations, ivPlant, btnOwned)
 
         return view
+    }
+
+    private fun showLeavingAppDialog(variationName: String) {
+        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_leaving_app, null)
+        val dialog = AlertDialog.Builder(requireContext(), R.style.CustomDialog)
+            .setView(dialogView)
+            .create()
+
+        dialogView.findViewById<Button>(R.id.btnCancel).setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialogView.findViewById<Button>(R.id.btnContinue).setOnClickListener {
+            dialog.dismiss()
+            val query = Uri.encode(variationName)
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com/search?q=$query"))
+            startActivity(intent)
+        }
+
+        dialog.show()
     }
 
     private fun loadPlantDetails(
         tvName: TextView, tvSciName: TextView, tvDesc: TextView,
         tvLight: TextView, tvWater: TextView, tvHum: TextView,
         tvTemp: TextView, tvFert: TextView, tvTox: TextView,
-        ivPlant: ImageView, btnOwned: ImageButton
+        tvVars: TextView, ivPlant: ImageView, btnOwned: ImageButton
     ) {
         lifecycleScope.launch {
             val db = AppDatabase.getDatabase(requireContext())
@@ -89,6 +111,15 @@ class PlantDetailsFragment : Fragment() {
                 tvTemp.text = it.tempPlt ?: "N/A"
                 tvFert.text = it.fertilizerPlt ?: "N/A"
                 tvTox.text = it.toxicityPlt ?: "N/A"
+                
+                val variations = it.plantVariation ?: "N/A"
+                tvVars.text = variations
+                
+                if (variations != "N/A") {
+                    tvVars.setOnClickListener {
+                        showLeavingAppDialog(variations)
+                    }
+                }
                 
                 // Update Owned Button Appearance based on per-user ownership
                 if (isOwned) {
@@ -216,8 +247,6 @@ class PlantDetailsFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        // Show Scan Button when leaving
-        (activity as? MainActivity)?.setScanButtonVisibility(View.VISIBLE)
     }
 
     companion object {

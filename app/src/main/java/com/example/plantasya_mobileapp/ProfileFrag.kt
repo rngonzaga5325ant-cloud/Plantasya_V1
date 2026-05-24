@@ -7,11 +7,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import com.example.plantasya_mobileapp.database.UserViewModel
+import kotlinx.coroutines.launch
 
 class ProfileFrag : Fragment() {
 
     private lateinit var sessionManager: SessionManager
+    private val userViewModel: UserViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -21,9 +27,25 @@ class ProfileFrag : Fragment() {
         
         sessionManager = SessionManager(requireContext())
 
-        // Update Account Name
+        // Update Account Name and PFP
         val accountName = view.findViewById<TextView>(R.id.accountName)
-        accountName.text = sessionManager.getUsername() ?: "Guest"
+        val imageView4 = view.findViewById<ImageView>(R.id.imageView4)
+
+        val userId = sessionManager.getUserId()
+        if (userId != -1) {
+            lifecycleScope.launch {
+                val user = userViewModel.getUserById(userId)
+                user?.let {
+                    accountName.text = it.displayName ?: it.username
+                    it.profilePic?.let { pic ->
+                        val bitmap = BitmapConverter.byteArrayToBitmap(pic)
+                        imageView4.setImageBitmap(bitmap)
+                    }
+                }
+            }
+        } else {
+            accountName.text = "Guest"
+        }
 
         val btnSettings = view.findViewById<Button>(R.id.btnSettings)
         btnSettings.setOnClickListener {

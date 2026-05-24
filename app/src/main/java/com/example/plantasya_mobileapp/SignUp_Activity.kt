@@ -12,6 +12,9 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.lifecycleScope
+import android.view.View
+import android.widget.FrameLayout
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.plantasya_mobileapp.database.User
 import com.example.plantasya_mobileapp.database.UserViewModel
 import kotlinx.coroutines.launch
@@ -35,6 +38,8 @@ class SignUp_Activity : AppCompatActivity() {
         val etPassword = findViewById<EditText>(R.id.etPassword)
         val etConfirmPassword = findViewById<EditText>(R.id.etConfirmPassword)
         val btnSignUp = findViewById<Button>(R.id.btnSignUp)
+        val signupContent = findViewById<ConstraintLayout>(R.id.signup_content)
+        val fragmentContainer = findViewById<FrameLayout>(R.id.fragment_container)
 
         btnSignUp.setOnClickListener {
             val username = etUsername.text.toString().trim()
@@ -62,20 +67,15 @@ class SignUp_Activity : AppCompatActivity() {
                 // Hash the password
                 val hashedPassword = hashPassword(password)
 
-                // Create new user
-                val newUser = User(
-                    username = username,
-                    password = hashedPassword,
-                    role = "user"
-                )
-
-                userViewModel.insertUser(newUser)
-                Toast.makeText(this@SignUp_Activity, "Account created successfully", Toast.LENGTH_SHORT).show()
+                // Instead of creating user, go to Profile Setup
+                signupContent.visibility = View.GONE
+                fragmentContainer.visibility = View.VISIBLE
                 
-                // Navigate back to login
-                val intent = Intent(this@SignUp_Activity, Login_Activity::class.java)
-                startActivity(intent)
-                finish()
+                val profileSetupFrag = ProfileSetupFrag.newInstance(username, hashedPassword)
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, profileSetupFrag)
+                    .addToBackStack(null)
+                    .commit()
             }
         }
     }

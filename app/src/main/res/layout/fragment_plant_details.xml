@@ -290,6 +290,31 @@
                                                     android:textSize="16sp"
                                                     app:layout_constraintTop_toBottomOf="@+id/lblToxicity" />
 
+                                                <TextView
+                                                    android:id="@+id/lblVariations"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_marginTop="16dp"
+                                                    android:fontFamily="@font/crimsontext_regular"
+                                                    android:text="Variations:"
+                                                    android:textColor="@color/black"
+                                                    android:textSize="18sp"
+                                                    android:textStyle="bold" />
+
+                                                <TextView
+                                                    android:id="@+id/tvVariationsDetail"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:fontFamily="@font/crimsontext_regular"
+                                                    android:paddingTop="4dp"
+                                                    android:text="Click to see variations"
+                                                    android:textColor="@color/btn_c"
+                                                    android:textSize="16sp"
+                                                    android:textStyle="italic"
+                                                    android:clickable="true"
+                                                    android:focusable="true"
+                                                    android:background="?attr/selectableItemBackground" />
+
                                             </LinearLayout>
             </ScrollView>
 

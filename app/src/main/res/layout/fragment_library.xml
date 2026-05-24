@@ -20,8 +20,10 @@
             android:src="@drawable/background_tree"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
 
         <EditText
             android:id="@+id/etSearch"
@@ -30,30 +32,32 @@
             android:layout_margin="16dp"
             android:background="@drawable/tbx_container"
             android:drawableStart="@android:drawable/ic_menu_search"
-            android:drawableTint="@color/black"
+
             android:drawablePadding="8dp"
+            android:drawableTint="@color/btn_c"
             android:hint="Search Plant"
-            android:textColorHint="@color/black"
-            android:textColor="@color/black"
             android:importantForAutofill="no"
             android:inputType="text"
             android:padding="8dp"
+            android:textColor="@color/btn_c"
+            android:textColorHint="@color/btn_c"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.047" />
+            app:layout_constraintVertical_bias="0.072" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvPlants"
             android:layout_width="428dp"
-            android:layout_height="607dp"
+            android:layout_height="620dp"
             android:layout_marginTop="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.529"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/etSearch"
-            app:layout_constraintVertical_bias="0.029" />
+            app:layout_constraintVertical_bias="0.09" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -50,4 +50,19 @@ object BitmapConverter {
             null
         }
     }
+
+    fun bitmapToByteArray(bitmap: Bitmap): ByteArray {
+        var scaledBitmap = bitmap
+        val maxSize = 1024
+        if (scaledBitmap.width > maxSize || scaledBitmap.height > maxSize) {
+            val scale = maxSize.toFloat() / Math.max(scaledBitmap.width, scaledBitmap.height)
+            val matrix = Matrix()
+            matrix.postScale(scale, scale)
+            scaledBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0, scaledBitmap.width, scaledBitmap.height, matrix, true)
+        }
+
+        val stream = ByteArrayOutputStream()
+        scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream)
+        return stream.toByteArray()
+    }
 }

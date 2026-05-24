@@ -64,6 +64,9 @@ class MainActivity : AppCompatActivity() {
         btnUser = findViewById(R.id.btn_user)
         btnScan = findViewById(R.id.btnScan)
 
+        // Hide scan button by default
+        btnScan.visibility = View.GONE
+
         // Set DashboardFrag as the default appearing fragment and highlight Home button
         if (intent.getBooleanExtra("SHOW_SETTINGS", false)) {
             replaceFragment(ProfileFrag(), btnUser.id)

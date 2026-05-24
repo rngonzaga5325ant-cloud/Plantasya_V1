@@ -102,7 +102,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
                 android:fontFamily="@font/crimsontext_regular"
-                android:text="Enter your username/email"
+                android:text="Enter your username"
                 android:textSize="25dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -130,6 +130,20 @@
             </TextView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/cbShowPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Show Password"
+            android:textColor="@color/black"
+            android:fontFamily="@font/crimsontext_regular"
+            app:buttonTint="@color/btn_c"
+            app:buttonIconTint="@color/white"
+            app:layout_constraintTop_toBottomOf="@+id/inputContainer"
+            app:layout_constraintStart_toStartOf="@+id/inputContainer"
+            android:layout_marginStart="55dp"
+            android:layout_marginTop="-15dp"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/buttonContainer"

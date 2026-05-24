@@ -2,7 +2,11 @@ package com.example.plantasya_mobileapp
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.InputType
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -40,7 +44,17 @@ class Login_Activity : AppCompatActivity() {
 
         val etUsername = findViewById<EditText>(R.id.etUsername)
         val etPassword = findViewById<EditText>(R.id.etPassword)
+        val cbShowPassword = findViewById<CheckBox>(R.id.cbShowPassword)
         val btnLogin = findViewById<Button>(R.id.btnLogin)
+
+        cbShowPassword.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                etPassword.transformationMethod = HideReturnsTransformationMethod.getInstance()
+            } else {
+                etPassword.transformationMethod = PasswordTransformationMethod.getInstance()
+            }
+            etPassword.setSelection(etPassword.text.length)
+        }
 
         btnLogin.setOnClickListener {
             val username = etUsername.text.toString().trim()

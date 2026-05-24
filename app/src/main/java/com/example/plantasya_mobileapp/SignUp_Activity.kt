@@ -2,7 +2,10 @@ package com.example.plantasya_mobileapp
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -40,6 +43,19 @@ class SignUp_Activity : AppCompatActivity() {
         val btnSignUp = findViewById<Button>(R.id.btnSignUp)
         val signupContent = findViewById<ConstraintLayout>(R.id.signup_content)
         val fragmentContainer = findViewById<FrameLayout>(R.id.fragment_container)
+        val cbShowPassword = findViewById<CheckBox>(R.id.cbShowPassword)
+
+        cbShowPassword.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                etPassword.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                etConfirmPassword.transformationMethod = HideReturnsTransformationMethod.getInstance()
+            } else {
+                etPassword.transformationMethod = PasswordTransformationMethod.getInstance()
+                etConfirmPassword.transformationMethod = PasswordTransformationMethod.getInstance()
+            }
+            etPassword.setSelection(etPassword.text.length)
+            etConfirmPassword.setSelection(etConfirmPassword.text.length)
+        }
 
         btnSignUp.setOnClickListener {
             val username = etUsername.text.toString().trim()

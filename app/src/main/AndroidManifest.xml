@@ -12,6 +12,7 @@
 
     <application
         android:allowBackup="true"
+        tools:replace="android:allowBackup,android:theme,android:label,android:icon,android:roundIcon,android:supportsRtl"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@drawable/plantasya_app_icon"

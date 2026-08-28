@@ -17,7 +17,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
+    <TextView
         android:id="@+id/etPlantName"
         android:layout_width="0dp"
         android:layout_height="50dp"
@@ -26,8 +26,6 @@
         android:layout_marginBottom="20dp"
         android:background="@drawable/tbx_container"
         android:fontFamily="@font/crimsontext_regular"
-        android:hint="Name this plant"
-        android:inputType="text"
         android:paddingStart="15dp"
         android:textColor="@color/black"
         android:textColorHint="@color/black"

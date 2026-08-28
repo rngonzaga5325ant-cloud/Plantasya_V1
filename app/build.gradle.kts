@@ -1,20 +1,17 @@
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.legacy.kapt)
+    id("org.jetbrains.kotlin.android")
+    id("org.jetbrains.kotlin.kapt")
 }
 
 android {
     namespace = "com.example.plantasya_mobileapp"
-    compileSdk {
-        version = release(36) {
-            minorApiLevel = 1
-        }
-    }
-
+    compileSdk = 35
+    
     defaultConfig {
         applicationId = "com.example.plantasya_mobileapp"
         minSdk = 33
-        targetSdk = 36
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -31,8 +28,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+    kotlinOptions {
+        jvmTarget = "17"
     }
     sourceSets {
         getByName("main") {
@@ -40,6 +40,10 @@ android {
                 srcDirs("src\\main\\res", "src\\main\\res\\plantasya_covers")
             }
         }
+    }
+    buildFeatures {
+        mlModelBinding = true
+        viewBinding = true
     }
 }
 
@@ -62,14 +66,20 @@ dependencies {
     implementation(libs.androidx.cardview)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
+    
+    // TensorFlow Lite dependencies
+    implementation(libs.tensorflow.lite)
+    implementation(libs.tensorflow.lite.support)
+    implementation(libs.tensorflow.lite.metadata)
+    
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
     // Core Room dependencies
-    implementation("androidx.room:room-runtime:2.8.4")
-    kapt("androidx.room:room-compiler:2.8.4") // Kotlin Annotation Processing Tool
+    implementation("androidx.room:room-runtime:2.6.1")
+    kapt("androidx.room:room-compiler:2.6.1")
 
     // Optional - Kotlin Extensions and Coroutines support
-    implementation("androidx.room:room-ktx:2.8.4")
+    implementation("androidx.room:room-ktx:2.6.1")
 }

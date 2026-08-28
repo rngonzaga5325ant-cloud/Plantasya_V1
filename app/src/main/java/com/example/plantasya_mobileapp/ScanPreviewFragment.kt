@@ -5,9 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -19,6 +19,7 @@ import kotlinx.coroutines.launch
 class ScanPreviewFragment : Fragment() {
 
     private var imageBytes: ByteArray? = null
+    private var predictedPlant: String? = null
     private lateinit var sessionManager: SessionManager
     private lateinit var database: AppDatabase
 
@@ -26,6 +27,7 @@ class ScanPreviewFragment : Fragment() {
         super.onCreate(savedInstanceState)
         arguments?.let {
             imageBytes = it.getByteArray(ARG_IMAGE_BYTES)
+            predictedPlant = it.getString(ARG_PLANT_NAME)
         }
         sessionManager = SessionManager(requireContext())
         database = AppDatabase.getDatabase(requireContext())
@@ -38,7 +40,7 @@ class ScanPreviewFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_scan_preview, container, false)
 
         val imgPreview = view.findViewById<ImageView>(R.id.imgPreview)
-        val etPlantName = view.findViewById<EditText>(R.id.etPlantName)
+        val tvPlantName = view.findViewById<TextView>(R.id.etPlantName)
         val btnOwn = view.findViewById<Button>(R.id.btnOwn)
         val btnNotOwn = view.findViewById<Button>(R.id.btnNotOwn)
         val btnBack = view.findViewById<ImageButton>(R.id.btnBack)
@@ -46,6 +48,8 @@ class ScanPreviewFragment : Fragment() {
         imageBytes?.let {
             imgPreview.setImageBitmap(BitmapConverter.byteArrayToBitmap(it))
         }
+        
+        tvPlantName.text = predictedPlant ?: "Unknown Plant"
 
         btnBack.setOnClickListener {
             (activity as? ScanActivity)?.showCamera()
@@ -53,11 +57,11 @@ class ScanPreviewFragment : Fragment() {
         }
 
         btnOwn.setOnClickListener {
-            savePlant(etPlantName.text.toString().trim(), true)
+            savePlant(tvPlantName.text.toString().trim(), true)
         }
 
         btnNotOwn.setOnClickListener {
-            savePlant(etPlantName.text.toString().trim(), false)
+            savePlant(tvPlantName.text.toString().trim(), false)
         }
 
         return view
@@ -107,12 +111,14 @@ class ScanPreviewFragment : Fragment() {
 
     companion object {
         private const val ARG_IMAGE_BYTES = "image_bytes"
+        private const val ARG_PLANT_NAME = "plant_name"
 
         @JvmStatic
-        fun newInstance(imageBytes: ByteArray) =
+        fun newInstance(imageBytes: ByteArray, plantName: String) =
             ScanPreviewFragment().apply {
                 arguments = Bundle().apply {
                     putByteArray(ARG_IMAGE_BYTES, imageBytes)
+                    putString(ARG_PLANT_NAME, plantName)
                 }
             }
     }

@@ -1,0 +1,9 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.gltfviewer">
+
+    <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="33" />
+
+    <application android:allowBackup="true" android:label="gltfviewer">
+        <!-- This module provides a GLSurfaceView-based viewer. No launcher activity by default. -->
+    </application>
+</manifest>

@@ -26,8 +26,19 @@ class NotificationReceiver : BroadcastReceiver() {
 
         showNotification(context, taskName, plantName, taskId)
         
-        // Reschedule if needed (handled in TaskScheduler)
-        TaskScheduler.scheduleNextReminder(context, taskId, taskName, plantName, intent.getStringExtra("FREQUENCY"))
+        // Reschedule and update DB
+        val nextTime = TaskScheduler.scheduleTask(context, taskId, taskName, plantName, intent.getStringExtra("FREQUENCY"))
+        updateTaskReminderTime(context, taskId, nextTime)
+    }
+
+    private fun updateTaskReminderTime(context: Context, taskId: Int, nextTime: Long) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val db = AppDatabase.getDatabase(context)
+            val task = db.taskDao().getTaskById(taskId)
+            task?.let {
+                db.taskDao().update(it.copy(nextReminderTime = nextTime))
+            }
+        }
     }
 
     private fun rescheduleAllTasks(context: Context) {

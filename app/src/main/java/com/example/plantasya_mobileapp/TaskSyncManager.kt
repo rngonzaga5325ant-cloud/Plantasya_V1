@@ -35,13 +35,15 @@ object TaskSyncManager {
         withContext(Dispatchers.IO) {
             finalTasks.forEach { task ->
                 val taskId = database.taskDao().insert(task)
-                TaskScheduler.scheduleTask(
+                val scheduledTime = TaskScheduler.scheduleTask(
                     context, 
                     taskId.toInt(), 
                     task.taskName ?: "Care Task", 
                     plantName, 
                     task.taskFrequency
                 )
+                // Update the task in DB with its scheduled time
+                database.taskDao().update(task.copy(idTask = taskId.toInt(), nextReminderTime = scheduledTime))
             }
         }
     }

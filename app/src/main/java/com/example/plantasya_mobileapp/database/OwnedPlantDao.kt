@@ -14,6 +14,9 @@ interface OwnedPlantDao {
     @Query("SELECT * FROM owned_plants WHERE library_id = :libraryId AND user_id = :userId LIMIT 1")
     suspend fun getOwnedPlantByLibraryIdAndUser(libraryId: Int, userId: Int): OwnedPlant?
 
+    @Query("SELECT * FROM owned_plants WHERE id_owned = :id")
+    suspend fun getOwnedPlantById(id: Int): OwnedPlant?
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(plant: OwnedPlant): Long
 

@@ -69,13 +69,15 @@ class ProfileFrag : Fragment() {
     }
 
     private fun showAboutDialog() {
-        val builder = androidx.appcompat.app.AlertDialog.Builder(requireContext(), R.style.CustomDialog)
-        builder.setTitle("About Plantasya")
-        builder.setMessage("Version: 9.1.26 (Build 1.0.0)\nDate Completed: February 20, 2025")
-        builder.setPositiveButton("Close") { dialog, _ ->
+        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_about, null)
+        val dialog = androidx.appcompat.app.AlertDialog.Builder(requireContext(), R.style.CustomDialog)
+            .setView(dialogView)
+            .create()
+
+        dialogView.findViewById<Button>(R.id.btnCloseAbout).setOnClickListener {
             dialog.dismiss()
         }
-        val dialog = builder.create()
+
         dialog.show()
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
     }

@@ -36,5 +36,8 @@ data class Task(
     val taskDone: Boolean = false,
 
     @ColumnInfo(name = "task_done_date")
-    val taskDoneDate: Long? = null
+    val taskDoneDate: Long? = null,
+
+    @ColumnInfo(name = "next_reminder_time")
+    val nextReminderTime: Long? = null
 )

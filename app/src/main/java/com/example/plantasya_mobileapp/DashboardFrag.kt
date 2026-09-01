@@ -1,6 +1,8 @@
 package com.example.plantasya_mobileapp
 
 import android.app.AlertDialog
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -22,7 +24,9 @@ import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import com.example.plantasya_mobileapp.database.AppDatabase
 import com.example.plantasya_mobileapp.database.OwnedPlant
+import com.example.plantasya_mobileapp.database.Task
 import kotlinx.coroutines.launch
+import java.util.Calendar
 import kotlin.math.abs
 
 class DashboardFrag : Fragment() {
@@ -84,9 +88,11 @@ class DashboardFrag : Fragment() {
 
         // Setup Task RecyclerView
         rvTasks.layoutManager = LinearLayoutManager(requireContext())
-        taskAdapter = TaskAdapter(emptyList(), mutableListOf()) { position, isChecked ->
-            updateTaskInDatabase(position, isChecked)
-        }
+        taskAdapter = TaskAdapter(emptyList(), { task, isChecked ->
+            updateTaskInDatabase(task, isChecked)
+        }, { task ->
+            showDateTimePicker(task)
+        })
         rvTasks.adapter = taskAdapter
 
         observeViewModel()
@@ -104,14 +110,38 @@ class DashboardFrag : Fragment() {
         return view
     }
 
-    private fun updateTaskInDatabase(position: Int, isChecked: Boolean) {
-        val currentTasks = viewModel.tasks.value
-        if (currentTasks != null && position < currentTasks.size) {
-            val task = currentTasks[position]
-            lifecycleScope.launch {
-                val db = AppDatabase.getDatabase(requireContext())
-                db.taskDao().update(task.copy(taskDone = isChecked))
-            }
+    private fun updateTaskInDatabase(task: Task, isChecked: Boolean) {
+        lifecycleScope.launch {
+            val db = AppDatabase.getDatabase(requireContext())
+            db.taskDao().update(task.copy(taskDone = isChecked, taskDoneDate = if (isChecked) System.currentTimeMillis() else null))
+        }
+    }
+
+    private fun showDateTimePicker(task: Task) {
+        val calendar = Calendar.getInstance()
+        
+        DatePickerDialog(requireContext(), { _, year, month, day ->
+            TimePickerDialog(requireContext(), { _, hour, minute ->
+                val selectedTime = Calendar.getInstance()
+                selectedTime.set(year, month, day, hour, minute)
+                
+                updateTaskSchedule(task, selectedTime.timeInMillis)
+            }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false).show()
+        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show()
+    }
+
+    private fun updateTaskSchedule(task: Task, timeInMillis: Long) {
+        lifecycleScope.launch {
+            val db = AppDatabase.getDatabase(requireContext())
+            val plant = db.ownedPlantDao().getOwnedPlantById(task.plantId)
+            val plantName = plant?.plantName ?: "Your Plant"
+            
+            // Schedule the exact alarm
+            TaskScheduler.scheduleManualTask(requireContext(), task.idTask, task.taskName ?: "Task", plantName, task.taskFrequency, timeInMillis)
+            
+            // Update database
+            db.taskDao().update(task.copy(nextReminderTime = timeInMillis))
+            Toast.makeText(requireContext(), "Reminder set for ${task.taskName}", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -168,7 +198,7 @@ class DashboardFrag : Fragment() {
                 viewPager.visibility = View.GONE
                 cardTasks.visibility = View.GONE
                 layoutEmptyState.visibility = View.VISIBLE
-                taskAdapter.updateTasks(emptyList(), mutableListOf())
+                taskAdapter.updateTasks(emptyList())
             } else {
                 lblOwnPlant.visibility = View.VISIBLE
                 lblOwnPlant.text = "OWNED PLANTS:"
@@ -189,9 +219,7 @@ class DashboardFrag : Fragment() {
 
         // Observe Tasks for selected plant
         viewModel.tasks.observe(viewLifecycleOwner) { tasks ->
-            val taskNames = tasks.map { "${it.taskName} (${it.taskFrequency})" }
-            val taskStates = tasks.map { it.taskDone }.toMutableList()
-            taskAdapter.updateTasks(taskNames, taskStates)
+            taskAdapter.updateTasks(tasks)
         }
     }
 }

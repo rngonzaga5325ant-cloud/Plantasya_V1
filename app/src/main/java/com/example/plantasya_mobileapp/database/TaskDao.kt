@@ -17,6 +17,9 @@ interface TaskDao {
     @Query("SELECT * FROM tasks_tbl WHERE plant_id = :plantId")
     suspend fun getTasksByPlantIdOnce(plantId: Int): List<Task>
 
+    @Query("SELECT * FROM tasks_tbl WHERE id_task = :taskId")
+    suspend fun getTaskById(taskId: Int): Task?
+
     @Insert
     suspend fun insert(task: Task): Long
 

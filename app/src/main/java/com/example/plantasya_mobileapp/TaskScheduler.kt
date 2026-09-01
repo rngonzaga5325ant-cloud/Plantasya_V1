@@ -9,7 +9,7 @@ import java.util.Calendar
 
 object TaskScheduler {
 
-    fun scheduleTask(context: Context, taskId: Int, taskName: String, plantName: String, frequency: String?) {
+    fun scheduleTask(context: Context, taskId: Int, taskName: String, plantName: String, frequency: String?): Long {
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(context, NotificationReceiver::class.java).apply {
             action = "com.example.plantasya_mobileapp.ACTION_TASK_REMINDER"
@@ -49,11 +49,40 @@ object TaskScheduler {
                 pendingIntent
             )
         }
+        return nextTime
     }
 
     fun scheduleNextReminder(context: Context, taskId: Int, taskName: String, plantName: String, frequency: String?) {
         if (frequency != null) {
             scheduleTask(context, taskId, taskName, plantName, frequency)
+        }
+    }
+
+    fun scheduleManualTask(context: Context, taskId: Int, taskName: String, plantName: String, frequency: String?, timeInMillis: Long) {
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val intent = Intent(context, NotificationReceiver::class.java).apply {
+            action = "com.example.plantasya_mobileapp.ACTION_TASK_REMINDER"
+            putExtra("TASK_ID", taskId)
+            putExtra("TASK_NAME", taskName)
+            putExtra("PLANT_NAME", plantName)
+            putExtra("FREQUENCY", frequency)
+        }
+
+        val pendingIntent = PendingIntent.getBroadcast(
+            context,
+            taskId,
+            intent,
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+        )
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            if (alarmManager.canScheduleExactAlarms()) {
+                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, timeInMillis, pendingIntent)
+            } else {
+                alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, timeInMillis, pendingIntent)
+            }
+        } else {
+            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, timeInMillis, pendingIntent)
         }
     }
 
@@ -85,11 +114,6 @@ object TaskScheduler {
             }
         }
         
-        // For testing/demo purposes, if it's "hourly", just add a minute
-        if (frequency == "hourly") {
-            // calendar.add(Calendar.MINUTE, 1) // Uncomment for quick testing
-        }
-
         return calendar.timeInMillis
     }
 

@@ -33,7 +33,16 @@ object TaskSyncManager {
         }
 
         withContext(Dispatchers.IO) {
-            finalTasks.forEach { database.taskDao().insert(it) }
+            finalTasks.forEach { task ->
+                val taskId = database.taskDao().insert(task)
+                TaskScheduler.scheduleTask(
+                    context, 
+                    taskId.toInt(), 
+                    task.taskName ?: "Care Task", 
+                    plantName, 
+                    task.taskFrequency
+                )
+            }
         }
     }
 
@@ -44,50 +53,50 @@ object TaskSyncManager {
                 Task(plantId = ownedId, taskName = "Fertilizing", taskFrequency = "Monthly (Spring/Summer)"),
                 Task(plantId = ownedId, taskName = "Leaf Cleaning", taskFrequency = "Every 2 weeks")
             )
-            "Snake Plant" -> listOf(
-                Task(plantId = ownedId, taskName = "Watering", taskFrequency = "Every 21-30 days"),
-                Task(plantId = ownedId, taskName = "Fertilizing", taskFrequency = "Monthly (Spring/Summer)"),
-                Task(plantId = ownedId, taskName = "Check soil moisture", taskFrequency = "Every 2 weeks")
-            )
-            "Philodendron" -> listOf(
+            "Pothos" -> listOf(
                 Task(plantId = ownedId, taskName = "Watering", taskFrequency = "Every 7 days"),
-                Task(plantId = ownedId, taskName = "Fertilizing", taskFrequency = "Monthly (Spring/Summer)"),
-                Task(plantId = ownedId, taskName = "Mist leaves", taskFrequency = "Every 3 days")
+                Task(plantId = ownedId, taskName = "Fertilizing", taskFrequency = "Monthly"),
+                Task(plantId = ownedId, taskName = "Pruning", taskFrequency = "Monthly")
             )
             "Calathea" -> listOf(
                 Task(plantId = ownedId, taskName = "Watering", taskFrequency = "Every 5-7 days"),
                 Task(plantId = ownedId, taskName = "Humidity check", taskFrequency = "Daily"),
                 Task(plantId = ownedId, taskName = "Fertilizing", taskFrequency = "Monthly (Spring/Summer)")
             )
-            "Bromeliad" -> listOf(
-                Task(plantId = ownedId, taskName = "Water central cup", taskFrequency = "Weekly"),
-                Task(plantId = ownedId, taskName = "Foliar Fertilizing", taskFrequency = "Monthly (Spring/Summer)"),
-                Task(plantId = ownedId, taskName = "Flush soil", taskFrequency = "Monthly")
-            )
-            "Peace Lily" -> listOf(
-                Task(plantId = ownedId, taskName = "Watering", taskFrequency = "Every 5-7 days"),
-                Task(plantId = ownedId, taskName = "Fertilizing", taskFrequency = "3 times per year"),
-                Task(plantId = ownedId, taskName = "Wipe leaves", taskFrequency = "Every 2 weeks")
-            )
-            "Rubber Tree" -> listOf(
-                Task(plantId = ownedId, taskName = "Watering", taskFrequency = "Every 7-14 days"),
-                Task(plantId = ownedId, taskName = "Fertilizing", taskFrequency = "Every 2-4 weeks"),
+            "Money Tree" -> listOf(
+                Task(plantId = ownedId, taskName = "Watering", taskFrequency = "Every 7-10 days"),
+                Task(plantId = ownedId, taskName = "Fertilizing", taskFrequency = "Every 4-6 weeks"),
                 Task(plantId = ownedId, taskName = "Rotate plant", taskFrequency = "Monthly")
-            )
-            "Fiddle Leaf Fig" -> listOf(
-                Task(plantId = ownedId, taskName = "Watering", taskFrequency = "Weekly"),
-                Task(plantId = ownedId, taskName = "Fertilizing", taskFrequency = "Every 2-4 weeks"),
-                Task(plantId = ownedId, taskName = "Clean leaves", taskFrequency = "Weekly")
             )
             "Orchid" -> listOf(
                 Task(plantId = ownedId, taskName = "Watering (Soak roots)", taskFrequency = "Every 7 days"),
                 Task(plantId = ownedId, taskName = "Fertilizing", taskFrequency = "Every 4-6 weeks"),
                 Task(plantId = ownedId, taskName = "Check bark moisture", taskFrequency = "Twice weekly")
             )
-            "Spider Plant" -> listOf(
+            "Parlor Palm" -> listOf(
                 Task(plantId = ownedId, taskName = "Watering", taskFrequency = "Every 7 days"),
+                Task(plantId = ownedId, taskName = "Mist leaves", taskFrequency = "Every 3 days"),
+                Task(plantId = ownedId, taskName = "Fertilizing", taskFrequency = "Monthly")
+            )
+            "ZZ Plant" -> listOf(
+                Task(plantId = ownedId, taskName = "Watering", taskFrequency = "Monthly"),
+                Task(plantId = ownedId, taskName = "Dusting leaves", taskFrequency = "Every 2 weeks"),
+                Task(plantId = ownedId, taskName = "Fertilizing", taskFrequency = "Every 3 months")
+            )
+            "Peace Lily" -> listOf(
+                Task(plantId = ownedId, taskName = "Watering", taskFrequency = "Every 5-7 days"),
+                Task(plantId = ownedId, taskName = "Fertilizing", taskFrequency = "3 times per year"),
+                Task(plantId = ownedId, taskName = "Wipe leaves", taskFrequency = "Every 2 weeks")
+            )
+            "Snake Plant" -> listOf(
+                Task(plantId = ownedId, taskName = "Watering", taskFrequency = "Every 21-30 days"),
                 Task(plantId = ownedId, taskName = "Fertilizing", taskFrequency = "Monthly (Spring/Summer)"),
-                Task(plantId = ownedId, taskName = "Prune spiderettes", taskFrequency = "As needed")
+                Task(plantId = ownedId, taskName = "Check soil moisture", taskFrequency = "Every 2 weeks")
+            )
+            "Dracaena" -> listOf(
+                Task(plantId = ownedId, taskName = "Watering", taskFrequency = "Every 10-14 days"),
+                Task(plantId = ownedId, taskName = "Mist leaves", taskFrequency = "Every 3 days"),
+                Task(plantId = ownedId, taskName = "Fertilizing", taskFrequency = "Monthly")
             )
             else -> emptyList()
         }

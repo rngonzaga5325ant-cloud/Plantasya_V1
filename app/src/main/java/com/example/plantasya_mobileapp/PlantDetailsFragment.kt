@@ -2,6 +2,7 @@ package com.example.plantasya_mobileapp
 
 import android.content.Intent
 import android.net.Uri
+import androidx.core.net.toUri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -51,6 +52,11 @@ class PlantDetailsFragment : Fragment() {
         val tvToxicity = view.findViewById<TextView>(R.id.tvToxicityDetail)
         val tvVariations = view.findViewById<TextView>(R.id.tvVariationsDetail)
         val ivPlant = view.findViewById<ImageView>(R.id.ivPlantDetail)
+        val tvHeight = view.findViewById<TextView>(R.id.tvHeightRangeDetail)
+        val tvSpace = view.findViewById<TextView>(R.id.tvSpaceOccupancyDetail)
+        val tvSoil = view.findViewById<TextView>(R.id.tvSoilDetail)
+        val tvPlantUse = view.findViewById<TextView>(R.id.tvPlantUseDetail)
+        val btnView3D = view.findViewById<ImageButton>(R.id.btnView3D)
 
         btnBack.setOnClickListener {
             parentFragmentManager.popBackStack()
@@ -60,7 +66,19 @@ class PlantDetailsFragment : Fragment() {
             toggleOwnedStatus(btnOwned)
         }
 
-        loadPlantDetails(tvName, tvSciName, tvDescription, tvLight, tvWater, tvHumidity, tvTemp, tvFertilizer, tvToxicity, tvVariations, ivPlant, btnOwned)
+        btnView3D.setOnClickListener {
+            val plantName = tvName.text.toString()
+            val intent = Intent(requireContext(), ThreeDPlantView::class.java).apply {
+                putExtra("PLANT_NAME", plantName)
+            }
+            startActivity(intent)
+        }
+
+        loadPlantDetails(
+            tvName, tvSciName, tvDescription, tvLight, tvWater, tvHumidity, 
+            tvTemp, tvFertilizer, tvToxicity, tvVariations, ivPlant, btnOwned,
+            tvHeight, tvSpace, tvSoil, tvPlantUse
+        )
 
         return view
     }
@@ -78,7 +96,7 @@ class PlantDetailsFragment : Fragment() {
         dialogView.findViewById<Button>(R.id.btnContinue).setOnClickListener {
             dialog.dismiss()
             val query = Uri.encode(variationName)
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com/search?q=$query"))
+            val intent = Intent(Intent.ACTION_VIEW, "https://www.google.com/search?q=$query".toUri())
             startActivity(intent)
         }
 
@@ -89,7 +107,9 @@ class PlantDetailsFragment : Fragment() {
         tvName: TextView, tvSciName: TextView, tvDesc: TextView,
         tvLight: TextView, tvWater: TextView, tvHum: TextView,
         tvTemp: TextView, tvFert: TextView, tvTox: TextView,
-        tvVars: TextView, ivPlant: ImageView, btnOwned: ImageButton
+        tvVars: TextView, ivPlant: ImageView, btnOwned: ImageButton,
+        tvHeight: TextView, tvSpace: TextView, tvSoil: TextView,
+        tvPlantUse: TextView
     ) {
         lifecycleScope.launch {
             val db = AppDatabase.getDatabase(requireContext())
@@ -119,6 +139,13 @@ class PlantDetailsFragment : Fragment() {
                         showLeavingAppDialog(variations)
                     }
                 }
+
+                // New details
+                tvHeight.text = it.heightRange ?: "N/A"
+                tvSpace.text = it.spaceOccupancy ?: "N/A"
+                // soilPlt already exists in model; map to tvSoil
+                tvSoil.text = it.soilPlt ?: "N/A"
+                tvPlantUse.text = it.plantUse ?: "N/A"
                 
                 // Update Owned Button Appearance based on per-user ownership
                 if (isOwned) {
@@ -126,6 +153,11 @@ class PlantDetailsFragment : Fragment() {
                 } else {
                     btnOwned.setImageResource(R.drawable.ic_owned_plant)
                 }
+
+                // Check if 3D model exists and show/hide button
+                val modelName = it.plantName?.trim()?.lowercase()?.replace(" ", "_") + ".glb"
+                val modelExists = context?.assets?.list("models")?.contains(modelName) == true
+                view?.findViewById<View>(R.id.btnView3D)?.visibility = if (modelExists) View.VISIBLE else View.GONE
 
                 // Load cover photo from database
                 it.coverPhoto?.let { bytes ->
@@ -203,15 +235,22 @@ class PlantDetailsFragment : Fragment() {
         lifecycleScope.launch {
             val db = AppDatabase.getDatabase(requireContext())
             val userId = sessionManager.getUserId()
+            
+            // Get owned plant to find its tasks before deleting
+            val ownedPlant = db.ownedPlantDao().getOwnedPlantByLibraryIdAndUser(plantId, userId)
+            if (ownedPlant != null) {
+                val tasks = db.taskDao().getTasksByPlantIdOnce(ownedPlant.idOwned)
+                for (task in tasks) {
+                    TaskScheduler.cancelTask(requireContext(), task.idTask)
+                }
+            }
+
             btnOwned.setImageResource(R.drawable.ic_owned_plant)
             db.ownedPlantDao().deleteByLibraryIdAndUser(plantId, userId)
             Toast.makeText(context, "$plantName removed from your dashboard", Toast.LENGTH_SHORT).show()
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-    }
 
     companion object {
         private const val ARG_PLANT_ID = "plant_id"

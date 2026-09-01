@@ -16,7 +16,7 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/pothos"
+            android:src="@drawable/cover_pothos"
             android:background="@drawable/oval_mirror_frame"
             android:clipToOutline="true" />
 

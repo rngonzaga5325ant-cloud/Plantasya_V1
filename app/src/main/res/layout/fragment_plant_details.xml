@@ -56,7 +56,7 @@
                 android:textColor="@color/black"
                 android:textSize="28sp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toStartOf="@+id/btnOwned"
+                app:layout_constraintEnd_toStartOf="@+id/btnView3D"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -72,6 +72,17 @@
                 app:layout_constraintEnd_toEndOf="@+id/tvPlantNameDetail"
                 app:layout_constraintStart_toStartOf="@+id/tvPlantNameDetail"
                 app:layout_constraintTop_toBottomOf="@+id/tvPlantNameDetail" />
+
+            <ImageButton
+                android:id="@+id/btnView3D"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="8dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:scaleType="fitCenter"
+                android:src="@android:drawable/ic_menu_view"
+                app:layout_constraintEnd_toStartOf="@+id/btnOwned"
+                app:layout_constraintTop_toTopOf="@+id/btnOwned" />
 
             <ImageButton
                 android:id="@+id/btnOwned"
@@ -265,6 +276,91 @@
                                                     android:textColor="@color/black"
                                                     android:textSize="16sp"
                                                     app:layout_constraintTop_toBottomOf="@+id/lblFertilizer" />
+
+                                                <!-- New fields: Height, Space occupancy, Soil recommendation, Plant use -->
+                                                <TextView
+                                                    android:id="@+id/lblHeight"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_marginTop="16dp"
+                                                    android:fontFamily="@font/crimsontext_regular"
+                                                    android:text="Height Range:"
+                                                    android:textColor="@color/black"
+                                                    android:textSize="18sp"
+                                                    android:textStyle="bold" />
+
+                                                <TextView
+                                                    android:id="@+id/tvHeightRangeDetail"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:fontFamily="@font/crimsontext_regular"
+                                                    android:paddingTop="4dp"
+                                                    android:text="Height range info"
+                                                    android:textColor="@color/black"
+                                                    android:textSize="16sp" />
+
+                                                <TextView
+                                                    android:id="@+id/lblSpace"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_marginTop="16dp"
+                                                    android:fontFamily="@font/crimsontext_regular"
+                                                    android:text="Space occupancy:"
+                                                    android:textColor="@color/black"
+                                                    android:textSize="18sp"
+                                                    android:textStyle="bold" />
+
+                                                <TextView
+                                                    android:id="@+id/tvSpaceOccupancyDetail"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:fontFamily="@font/crimsontext_regular"
+                                                    android:paddingTop="4dp"
+                                                    android:text="Space occupancy info"
+                                                    android:textColor="@color/black"
+                                                    android:textSize="16sp" />
+
+                                                <TextView
+                                                    android:id="@+id/lblSoil"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_marginTop="16dp"
+                                                    android:fontFamily="@font/crimsontext_regular"
+                                                    android:text="Soil recommendation:"
+                                                    android:textColor="@color/black"
+                                                    android:textSize="18sp"
+                                                    android:textStyle="bold" />
+
+                                                <TextView
+                                                    android:id="@+id/tvSoilDetail"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:fontFamily="@font/crimsontext_regular"
+                                                    android:paddingTop="4dp"
+                                                    android:text="Soil recommendation info"
+                                                    android:textColor="@color/black"
+                                                    android:textSize="16sp" />
+
+                                                <TextView
+                                                    android:id="@+id/lblPlantUse"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_marginTop="16dp"
+                                                    android:fontFamily="@font/crimsontext_regular"
+                                                    android:text="Plant use:"
+                                                    android:textColor="@color/black"
+                                                    android:textSize="18sp"
+                                                    android:textStyle="bold" />
+
+                                                <TextView
+                                                    android:id="@+id/tvPlantUseDetail"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:fontFamily="@font/crimsontext_regular"
+                                                    android:paddingTop="4dp"
+                                                    android:text="Plant use info"
+                                                    android:textColor="@color/black"
+                                                    android:textSize="16sp" />
 
                                                 <TextView
                                                     android:id="@+id/lblToxicity"

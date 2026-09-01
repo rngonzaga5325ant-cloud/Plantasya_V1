@@ -50,5 +50,14 @@ data class LibraryPlant(
     val toxicityPlt: String? = null,
 
     @ColumnInfo(name = "plant_variation")
-    val plantVariation: String? = null
+    val plantVariation: String? = null,
+
+    @ColumnInfo(name = "height_range")
+    val heightRange: String? = null,
+
+    @ColumnInfo(name = "space_occupancy")
+    val spaceOccupancy: String? = null,
+
+    @ColumnInfo(name = "plant_use")
+    val plantUse: String? = null
 )

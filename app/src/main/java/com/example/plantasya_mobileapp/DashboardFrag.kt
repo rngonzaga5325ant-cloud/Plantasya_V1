@@ -132,7 +132,12 @@ class DashboardFrag : Fragment() {
         }
 
         dialog.show()
-        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        dialog.window?.let { window ->
+            window.setBackgroundDrawableResource(android.R.color.transparent)
+            val layoutParams = window.attributes
+            layoutParams.width = (resources.displayMetrics.widthPixels * 0.95).toInt()
+            window.attributes = layoutParams
+        }
     }
 
     private fun checkCameraPermission() {

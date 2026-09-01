@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.plantasya_mobileapp.database.UserViewModel
@@ -64,9 +63,21 @@ class ProfileFrag : Fragment() {
 
         val btnAboutApp = view.findViewById<Button>(R.id.btnAboutApp)
         btnAboutApp.setOnClickListener {
-            Toast.makeText(requireContext(), "Under development", Toast.LENGTH_SHORT).show()
+            showAboutDialog()
         }
         return view
+    }
+
+    private fun showAboutDialog() {
+        val builder = androidx.appcompat.app.AlertDialog.Builder(requireContext(), R.style.CustomDialog)
+        builder.setTitle("About Plantasya")
+        builder.setMessage("Version: 9.1.26 (Build 1.0.0)\nDate Completed: February 20, 2025")
+        builder.setPositiveButton("Close") { dialog, _ ->
+            dialog.dismiss()
+        }
+        val dialog = builder.create()
+        dialog.show()
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
     }
 
     private fun openTutorial() {

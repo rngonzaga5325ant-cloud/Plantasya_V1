@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
@@ -17,8 +18,12 @@ import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import com.example.plantasya_mobileapp.ml.ModelUnquant
 import org.tensorflow.lite.DataType
+import org.tensorflow.lite.support.common.ops.NormalizeOp
 import org.tensorflow.lite.support.image.ImageProcessor
 import org.tensorflow.lite.support.image.TensorImage
 import org.tensorflow.lite.support.image.ops.ResizeOp
@@ -39,7 +44,10 @@ class ScanActivity : AppCompatActivity() {
     private lateinit var btnBack: ImageButton
 
     // Labels based on the model provided
-    private val labels = listOf("Aglaonema", "Pothos", "Calathea", "Money Tree", "Orchid")
+    private val labels = listOf(
+        "Aglaonema", "Pothos", "Calathea", "Money Tree", "Orchid",
+        "Parlor Palm", "ZZ Plant", "Peace Lily", "Snake Plant", "Dracaena"
+    )
 
     companion object {
         fun newIntent(context: Context): Intent {
@@ -49,7 +57,12 @@ class ScanActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         setContentView(R.layout.activity_scan)
+
+        val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
+        windowInsetsController.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
 
         // Initialize Views
         viewFinder = findViewById(R.id.viewFinder)
@@ -142,9 +155,12 @@ class ScanActivity : AppCompatActivity() {
     private fun classifyImage(bitmap: Bitmap): String {
         if (model == null) return "Unknown"
 
-        // Pre-process Image (assuming 224x224 input size common for these models)
+        // Pre-process Image: Resize to 224x224 and Normalize
+        // Most TFLite classification models expect float input normalized between 0-1 or -1 to 1
+        // For Teachable Machine/MobileNet: mean=127.5, std=127.5 maps [0,255] to [-1,1]
         val imageProcessor = ImageProcessor.Builder()
             .add(ResizeOp(224, 224, ResizeOp.ResizeMethod.BILINEAR))
+            .add(NormalizeOp(127.5f, 127.5f))
             .build()
 
         var tensorImage = TensorImage(DataType.FLOAT32)
@@ -166,7 +182,13 @@ class ScanActivity : AppCompatActivity() {
             }
         }
 
-        return if (maxIndex < labels.size) labels[maxIndex] else "Unknown"
+        // Recalibrated threshold: 75% for higher confidence requirement
+        val confidenceThreshold = 0.75f
+        return if (maxIndex < labels.size && maxProb >= confidenceThreshold) {
+            labels[maxIndex]
+        } else {
+            "Unknown"
+        }
     }
 
     private fun showPreview(imageBytes: ByteArray, plantName: String) {

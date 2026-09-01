@@ -1,18 +1,22 @@
 package com.example.plantasya_mobileapp
 
 import android.Manifest
+import android.app.AlarmManager
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
+import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.view.View
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
@@ -26,6 +30,14 @@ class MainActivity : AppCompatActivity() {
     private lateinit var btnUser: ImageButton
     private lateinit var btnScan: ImageButton
     private lateinit var sessionManager: SessionManager
+
+    private val requestNotificationPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (!isGranted) {
+            Toast.makeText(this, "Notifications are disabled. You won't receive care reminders.", Toast.LENGTH_SHORT).show()
+        }
+    }
 
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -42,20 +54,15 @@ class MainActivity : AppCompatActivity() {
         
         sessionManager = SessionManager(this)
         checkSession()
+        checkPermissions()
 
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 
-        // Hide the navigation bar automatically (Immersive Mode)
+        // Hide the system bars automatically (Immersive Mode)
         val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
         windowInsetsController.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-        windowInsetsController.hide(WindowInsetsCompat.Type.navigationBars())
-
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+        windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
 
         // Initialize buttons
         btnHome = findViewById(R.id.btn_home)
@@ -133,6 +140,31 @@ class MainActivity : AppCompatActivity() {
             } else {
                 button.backgroundTintList = ColorStateList.valueOf(colorWhite)
                 button.imageTintList = ColorStateList.valueOf(colorBtnC)
+            }
+        }
+    }
+
+    private fun checkPermissions() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                requestNotificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
+        checkExactAlarmPermission()
+    }
+
+    private fun checkExactAlarmPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            if (!alarmManager.canScheduleExactAlarms()) {
+                AlertDialog.Builder(this)
+                    .setTitle("Exact Alarms Required")
+                    .setMessage("To receive precise care reminders, please allow this app to set exact alarms in settings.")
+                    .setPositiveButton("Settings") { _, _ ->
+                        startActivity(Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM))
+                    }
+                    .setNegativeButton("Cancel", null)
+                    .show()
             }
         }
     }

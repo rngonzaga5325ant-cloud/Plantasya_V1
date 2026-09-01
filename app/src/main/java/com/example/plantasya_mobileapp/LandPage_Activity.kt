@@ -29,10 +29,10 @@ class LandPage_Activity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_landpage_screen)
         
-        // Hide the navigation bar automatically (Immersive Mode)
+        // Hide the system bars automatically (Immersive Mode)
         val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
         windowInsetsController.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-        windowInsetsController.hide(WindowInsetsCompat.Type.navigationBars())
+        windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
 
         val btnLogin: Button = findViewById(R.id.btnLogin)
         val btnSignUp: Button = findViewById(R.id.SignUp)

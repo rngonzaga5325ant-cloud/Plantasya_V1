@@ -32,10 +32,10 @@ class SignUp_Activity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_signup_page)
 
-        // Hide the navigation bar automatically (Immersive Mode)
+        // Hide the system bars automatically (Immersive Mode)
         val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
         windowInsetsController.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-        windowInsetsController.hide(WindowInsetsCompat.Type.navigationBars())
+        windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
 
         val etUsername = findViewById<EditText>(R.id.etUsername)
         val etPassword = findViewById<EditText>(R.id.etPassword)

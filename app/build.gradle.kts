@@ -66,7 +66,7 @@ dependencies {
     implementation(libs.androidx.cardview)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
-    
+
     // TensorFlow Lite dependencies
     implementation(libs.tensorflow.lite)
     implementation(libs.tensorflow.lite.support)
@@ -82,4 +82,9 @@ dependencies {
 
     // Optional - Kotlin Extensions and Coroutines support
     implementation("androidx.room:room-ktx:2.6.1")
+
+    // Filament dependencies
+    implementation(libs.filament.android)
+    implementation(libs.filament.gltfio.android)
+    implementation(libs.filament.utils.android)
 }

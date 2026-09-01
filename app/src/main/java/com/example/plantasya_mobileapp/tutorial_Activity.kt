@@ -7,7 +7,6 @@ import android.view.MotionEvent
 import android.widget.ViewFlipper
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
@@ -25,18 +24,12 @@ class tutorial_Activity : AppCompatActivity() {
 
         val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
         windowInsetsController.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-        windowInsetsController.hide(WindowInsetsCompat.Type.navigationBars())
+        windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
 
         viewFlipper = findViewById(R.id.viewFlipper)
 
         // Initialize GestureDetector to handle swipes
         gestureDetector = GestureDetector(this, SwipeGestureListener())
-
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {

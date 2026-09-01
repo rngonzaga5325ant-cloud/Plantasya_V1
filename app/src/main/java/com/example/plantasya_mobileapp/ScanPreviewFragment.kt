@@ -56,12 +56,23 @@ class ScanPreviewFragment : Fragment() {
             parentFragmentManager.beginTransaction().remove(this).commit()
         }
 
-        btnOwn.setOnClickListener {
-            savePlant(tvPlantName.text.toString().trim(), true)
-        }
+        // If the model returned an explicit "Unknown" result, show only one button
+        // labeled "Try scanning again" which returns to camera preview.
+        if (predictedPlant == "Unknown" || predictedPlant.isNullOrEmpty()) {
+            btnOwn.visibility = View.GONE
+            btnNotOwn.text = "Try scanning again"
+            btnNotOwn.setOnClickListener {
+                (activity as? ScanActivity)?.showCamera()
+                parentFragmentManager.beginTransaction().remove(this).commit()
+            }
+        } else {
+            btnOwn.setOnClickListener {
+                savePlant(tvPlantName.text.toString().trim(), true)
+            }
 
-        btnNotOwn.setOnClickListener {
-            savePlant(tvPlantName.text.toString().trim(), false)
+            btnNotOwn.setOnClickListener {
+                savePlant(tvPlantName.text.toString().trim(), false)
+            }
         }
 
         return view

@@ -155,7 +155,8 @@ class PlantDetailsFragment : Fragment() {
                 }
 
                 // Check if 3D model exists and show/hide button
-                val modelName = it.plantName?.trim()?.lowercase()?.replace(" ", "_") + ".glb"
+                val plantNameString = it.plantName ?: ""
+                val modelName = ThreeDPlantView.getModelFileName(plantNameString)
                 val modelExists = context?.assets?.list("models")?.contains(modelName) == true
                 view?.findViewById<View>(R.id.btnView3D)?.visibility = if (modelExists) View.VISIBLE else View.GONE
 
@@ -221,7 +222,7 @@ class PlantDetailsFragment : Fragment() {
                 libraryId = libraryPlant.idLib,
                 plantName = libraryPlant.plantName,
                 scientificName = libraryPlant.scientificName,
-                plantPic = libraryPlant.coverPhoto,
+                plantPic = libraryPlant.plantPic ?: libraryPlant.coverPhoto,
                 owned = true
             )
             val newId = db.ownedPlantDao().insert(ownedPlant)

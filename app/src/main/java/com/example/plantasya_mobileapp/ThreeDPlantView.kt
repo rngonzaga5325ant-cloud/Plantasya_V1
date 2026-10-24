@@ -27,6 +27,18 @@ class ThreeDPlantView : AppCompatActivity(), Choreographer.FrameCallback {
         init {
             Utils.init()
         }
+
+        fun getModelFileName(plantName: String): String {
+            val cleanName = plantName.trim().lowercase()
+            return when {
+                cleanName.contains("ctenanthe") || cleanName.contains("cthenathe") -> "cthenathe.glb"
+                cleanName.contains("monstera") -> "monstera.glb"
+                cleanName.contains("poinsettia") -> "poinsettias.glb"
+                cleanName.contains("polka") || cleanName.contains("polkadot") -> "polkadot_plant.glb"
+                cleanName.contains("pony") || cleanName.contains("ponytail") -> "ponytail_palm.glb"
+                else -> cleanName.replace(" ", "_") + ".glb"
+            }
+        }
     }
 
     private lateinit var surfaceView: SurfaceView
@@ -124,7 +136,7 @@ class ThreeDPlantView : AppCompatActivity(), Choreographer.FrameCallback {
         // Ensure only one model loads at a time to reduce lag and memory usage
         loadJob?.cancel()
         loadJob = lifecycleScope.launch {
-            val modelName = plantName.trim().lowercase().replace(" ", "_") + ".glb"
+            val modelName = getModelFileName(plantName)
             try {
                 val buffer = withContext(Dispatchers.IO) {
                     readAsset("models/$modelName")

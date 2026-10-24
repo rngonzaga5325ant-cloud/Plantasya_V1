@@ -100,6 +100,81 @@ object TaskSyncManager {
                 Task(plantId = ownedId, taskName = "Mist leaves", taskFrequency = "Every 3 days"),
                 Task(plantId = ownedId, taskName = "Fertilizing", taskFrequency = "Monthly")
             )
+            "Cast Iron Plant" -> listOf(
+                Task(plantId = ownedId, taskName = "Watering", taskFrequency = "Every 14 days"),
+                Task(plantId = ownedId, taskName = "Wipe leaves", taskFrequency = "Monthly"),
+                Task(plantId = ownedId, taskName = "Fertilizing", taskFrequency = "Every 2 months")
+            )
+            "Chrysanthemum" -> listOf(
+                Task(plantId = ownedId, taskName = "Watering", taskFrequency = "Every 3 days"),
+                Task(plantId = ownedId, taskName = "Deadhead blooms", taskFrequency = "Weekly"),
+                Task(plantId = ownedId, taskName = "Fertilizing", taskFrequency = "Every 2 weeks")
+            )
+            "Ctenanthe" -> listOf(
+                Task(plantId = ownedId, taskName = "Watering", taskFrequency = "Every 5-7 days"),
+                Task(plantId = ownedId, taskName = "Mist leaves", taskFrequency = "Daily"),
+                Task(plantId = ownedId, taskName = "Fertilizing", taskFrequency = "Monthly")
+            )
+            "English Ivy" -> listOf(
+                Task(plantId = ownedId, taskName = "Watering", taskFrequency = "Every 7 days"),
+                Task(plantId = ownedId, taskName = "Mist foliage", taskFrequency = "Every 3 days"),
+                Task(plantId = ownedId, taskName = "Pruning/Trimming", taskFrequency = "Monthly")
+            )
+            "Dumb Cane" -> listOf(
+                Task(plantId = ownedId, taskName = "Watering", taskFrequency = "Every 7 days"),
+                Task(plantId = ownedId, taskName = "Wipe leaves", taskFrequency = "Every 2 weeks"),
+                Task(plantId = ownedId, taskName = "Fertilizing", taskFrequency = "Every 3 weeks")
+            )
+            "Hyacinth" -> listOf(
+                Task(plantId = ownedId, taskName = "Watering", taskFrequency = "Every 4-5 days"),
+                Task(plantId = ownedId, taskName = "Rotate pot", taskFrequency = "Every 3 days"),
+                Task(plantId = ownedId, taskName = "Check soil moisture", taskFrequency = "Every 2 days")
+            )
+            "Jade Plant" -> listOf(
+                Task(plantId = ownedId, taskName = "Watering", taskFrequency = "Every 14-21 days"),
+                Task(plantId = ownedId, taskName = "Wipe leaves", taskFrequency = "Monthly"),
+                Task(plantId = ownedId, taskName = "Fertilizing", taskFrequency = "Every 2 months")
+            )
+            "Kalanchoe" -> listOf(
+                Task(plantId = ownedId, taskName = "Watering", taskFrequency = "Every 10-14 days"),
+                Task(plantId = ownedId, taskName = "Deadhead flowers", taskFrequency = "Weekly"),
+                Task(plantId = ownedId, taskName = "Fertilizing", taskFrequency = "Monthly")
+            )
+            "Monstera Deliciosa" -> listOf(
+                Task(plantId = ownedId, taskName = "Watering", taskFrequency = "Every 7-10 days"),
+                Task(plantId = ownedId, taskName = "Wipe leaves", taskFrequency = "Every 2 weeks"),
+                Task(plantId = ownedId, taskName = "Fertilizing", taskFrequency = "Monthly")
+            )
+            "Poinsettia" -> listOf(
+                Task(plantId = ownedId, taskName = "Watering", taskFrequency = "Every 5-7 days"),
+                Task(plantId = ownedId, taskName = "Check light exposure", taskFrequency = "Weekly"),
+                Task(plantId = ownedId, taskName = "Mist bracts", taskFrequency = "Every 3 days")
+            )
+            "Polka Dot Plant" -> listOf(
+                Task(plantId = ownedId, taskName = "Watering", taskFrequency = "Every 4-5 days"),
+                Task(plantId = ownedId, taskName = "Pinch stem tips", taskFrequency = "Every 2 weeks"),
+                Task(plantId = ownedId, taskName = "Mist foliage", taskFrequency = "Every 2 days")
+            )
+            "Pony Tail Palm" -> listOf(
+                Task(plantId = ownedId, taskName = "Watering", taskFrequency = "Every 14-20 days"),
+                Task(plantId = ownedId, taskName = "Dust leaves", taskFrequency = "Monthly"),
+                Task(plantId = ownedId, taskName = "Fertilizing", taskFrequency = "Every 2 months")
+            )
+            "Prayer Plant" -> listOf(
+                Task(plantId = ownedId, taskName = "Watering", taskFrequency = "Every 5 days"),
+                Task(plantId = ownedId, taskName = "Mist leaves", taskFrequency = "Daily"),
+                Task(plantId = ownedId, taskName = "Fertilizing", taskFrequency = "Every 2 weeks")
+            )
+            "Rubber Plant" -> listOf(
+                Task(plantId = ownedId, taskName = "Watering", taskFrequency = "Every 7-10 days"),
+                Task(plantId = ownedId, taskName = "Wipe leaves", taskFrequency = "Every 2 weeks"),
+                Task(plantId = ownedId, taskName = "Fertilizing", taskFrequency = "Monthly")
+            )
+            "Schefflera" -> listOf(
+                Task(plantId = ownedId, taskName = "Watering", taskFrequency = "Every 7 days"),
+                Task(plantId = ownedId, taskName = "Rotate canopy", taskFrequency = "Monthly"),
+                Task(plantId = ownedId, taskName = "Fertilizing", taskFrequency = "Monthly")
+            )
             else -> emptyList()
         }
     }

@@ -28,4 +28,7 @@ interface LibraryPlantDao {
 
     @Query("UPDATE library_plant_tbl SET owned = :isOwned WHERE id_lib = :plantId")
     suspend fun updateOwnedStatus(plantId: Int, isOwned: Boolean)
+
+    @Query("UPDATE library_plant_tbl SET plant_pic = :plantPic WHERE plant_name LIKE '%' || :plantName || '%'")
+    suspend fun updatePlantPic(plantName: String, plantPic: ByteArray?)
 }

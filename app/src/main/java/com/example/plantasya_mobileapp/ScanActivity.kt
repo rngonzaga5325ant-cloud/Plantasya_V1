@@ -46,7 +46,10 @@ class ScanActivity : AppCompatActivity() {
     // Labels based on the model provided
     private val labels = listOf(
         "Aglaonema", "Pothos", "Calathea", "Money Tree", "Orchid",
-        "Parlor Palm", "ZZ Plant", "Peace Lily", "Snake Plant", "Dracaena"
+        "Parlor Palm", "ZZ Plant", "Peace Lily", "Snake Plant", "Dracaena",
+        "Cast Iron Plant", "Chrysanthemum", "Ctenathe", "English Ivy", "Dumb Cane",
+        "Hyacinth", "Jade Plant", "Kalanchoe", "Monstera Deliciosa", "Poinsettia",
+        "Polka Dot Plant", "Pony Tail Palm", "Prayer Plant", "Rubber Plant", "Schefflera"
     )
 
     companion object {
@@ -174,7 +177,7 @@ class ScanActivity : AppCompatActivity() {
         // Find best match
         val probs = outputBuffer.floatArray
         var maxIndex = 0
-        var maxProb = 0.0f
+        var maxProb = 0.90f
         for (i in probs.indices) {
             if (probs[i] > maxProb) {
                 maxProb = probs[i]
@@ -183,7 +186,7 @@ class ScanActivity : AppCompatActivity() {
         }
 
         // Recalibrated threshold: 75% for higher confidence requirement
-        val confidenceThreshold = 0.75f
+        val confidenceThreshold = 0.80f
         return if (maxIndex < labels.size && maxProb >= confidenceThreshold) {
             labels[maxIndex]
         } else {

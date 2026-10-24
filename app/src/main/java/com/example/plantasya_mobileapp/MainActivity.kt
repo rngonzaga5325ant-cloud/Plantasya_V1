@@ -78,7 +78,10 @@ class MainActivity : AppCompatActivity() {
         if (intent.getBooleanExtra("SHOW_SETTINGS", false)) {
             replaceFragment(ProfileFrag(), btnUser.id)
         } else {
-            replaceFragment(DashboardFrag(), btnHome.id)
+            val dashboardFrag = DashboardFrag().apply {
+                arguments = intent.extras
+            }
+            replaceFragment(dashboardFrag, btnHome.id)
         }
 
         // Set OnClickListeners for each button
@@ -124,6 +127,11 @@ class MainActivity : AppCompatActivity() {
         setIntent(intent)
         if (intent.getBooleanExtra("SHOW_SETTINGS", false)) {
             replaceFragment(ProfileFrag(), btnUser.id)
+        } else if (intent.getBooleanExtra("OPEN_DASHBOARD", false) || intent.hasExtra("HIGHLIGHT_TASK_ID") || intent.getBooleanExtra("SHOW_OVERDUE_DIALOG", false)) {
+            val dashboardFrag = DashboardFrag().apply {
+                arguments = intent.extras
+            }
+            replaceFragment(dashboardFrag, btnHome.id)
         }
     }
 

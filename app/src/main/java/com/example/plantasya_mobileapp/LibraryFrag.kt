@@ -145,8 +145,9 @@ class LibraryFrag : Fragment() {
                 tvPlantName.text = plant.plantName
                 tvScientificName.text = plant.scientificName
                 
-                // Load cover photo from database
-                plant.coverPhoto?.let { bytes ->
+                // Load plant picture (profile photo) from database, falling back to cover photo
+                val photoBytes = plant.plantPic ?: plant.coverPhoto
+                photoBytes?.let { bytes ->
                     val bitmap = BitmapConverter.byteArrayToBitmap(bytes)
                     ivPlant.setImageBitmap(bitmap)
                     ivPlant.visibility = View.VISIBLE

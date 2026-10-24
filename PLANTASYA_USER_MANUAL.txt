@@ -1,0 +1,437 @@
+================================================================================
+PLANTASYA MOBILE APPLICATION
+OFFICIAL COMPREHENSIVE USER MANUAL & OPERATING GUIDE
+================================================================================
+
+App Name: Plantasya (Plantasya_MobileApp)
+Package Name: com.example.plantasya_mobileapp
+Target Platform: Android OS (Version 8.0 / API 26 and higher)
+Document Version: 1.0.0
+Target Audience: Non-Technical Users, Home Gardeners, Houseplant Enthusiasts
+
+================================================================================
+TABLE OF CONTENTS
+================================================================================
+1. Document Overview & Welcome Preface
+2. Chapter 1: Introduction to Plantasya
+   - 1.1 Application Purpose & Core Mission
+   - 1.2 Target Audience & User Profiles
+   - 1.3 Key Features Summary
+3. Chapter 2: System Requirements & Device Permissions
+   - 2.1 Hardware and Software Requirements
+   - 2.2 Permissions Guide (Camera, Storage, Notifications, Exact Alarms)
+   - 2.3 Granting Permissions Step-by-Step
+4. Chapter 3: Account Creation, Login & Session Management
+   - 3.1 Application Splash Screen & Launch
+   - 3.2 Landing Screen Navigation
+   - 3.3 Registering a New Account
+   - 3.4 Profile Setup (Avatar Upload & Display Name)
+   - 3.5 Logging In
+   - 3.6 Session Persistence & Auto-Login
+   - 3.7 Changing Password and Credentials
+   - 3.8 Logging Out
+   - 3.9 Account Deletion and Data Removal
+5. Chapter 4: Main Dashboard & Daily Plant Care Scheduling
+   - 4.1 Dashboard Interface Layout
+   - 4.2 Owned Plants Carousel Navigation
+   - 4.3 Empty State & Adding Plants
+   - 4.4 Automated Task Generation
+   - 4.5 Completing Daily Tasks (Mark as Done)
+   - 4.6 Setting Custom Care Reminders (Date & Time Picker)
+   - 4.7 Android Alarm Manager & System Push Notifications
+6. Chapter 5: AI Plant Identification & Camera Scanning
+   - 5.1 On-Device TensorFlow Lite AI Recognition
+   - 5.2 Opening the AI Scanner
+   - 5.3 Camera Framing and Lighting Recommendations
+   - 5.4 Photo Capture & Real-Time Classification
+   - 5.5 Reviewing Results & Confirming Ownership
+   - 5.6 Handling Low Confidence and Unknown Plant Scans
+7. Chapter 6: Botanical Plant Library & Catalog
+   - 6.1 Browsing the Botanical Catalog
+   - 6.2 Real-Time Search Bar
+   - 6.3 Alphabetical Indexing (A-Z Headers)
+   - 6.4 Detailed Plant Profiles & Care Specifications
+   - 6.5 External Web Search Redirection for Plant Variations
+8. Chapter 7: Interactive 3D Plant Model Viewer
+   - 7.1 Overview of 3D Rendering (Google Filament Engine)
+   - 7.2 Launching 3D View Mode
+   - 7.3 Touch Gestures (Rotate 360, Zoom, Pan)
+   - 7.4 Omni-Directional 10-Point Studio Lighting
+   - 7.5 Using and Dismissing Gesture Overlay Guides
+9. Chapter 8: Scan History & Activity Logging
+   - 8.1 History Feature Overview
+   - 8.2 Chronological History List
+   - 8.3 Converting Historical Scans to Owned Dashboard Plants
+10. Chapter 9: Profile Customization & Onboarding
+    - 9.1 Profile Tab Features
+    - 9.2 Interactive Application Tutorial
+    - 9.3 App Info & Version Modal ("About App")
+11. Chapter 10: Step-by-Step Operating Procedures (10 Workflows)
+    - Workflow 1: New Account Sign-Up & Profile Customization
+    - Workflow 2: Scanning a Plant with the AI Camera
+    - Workflow 3: Manually Adding a Plant from Library to Dashboard
+    - Workflow 4: Setting Custom Care Alarms
+    - Workflow 5: Viewing and Interacting with 3D Models
+    - Workflow 6: Managing History Log & Upgrading Scans
+    - Workflow 7: Updating Username and Security Password
+    - Workflow 8: Removing an Owned Plant and Clearing Alarms
+    - Workflow 9: Inspecting Pet Toxicity Specs
+    - Workflow 10: Logging Out and Deleting Account
+12. Chapter 11: Complete Botanical Catalog Reference Guide
+13. Chapter 12: Troubleshooting, FAQs & Maintenance
+
+================================================================================
+DOCUMENT OVERVIEW & WELCOME PREFACE
+================================================================================
+Welcome to the official Plantasya User Manual. This document serves as a complete,
+accessible, non-technical operational manual for the Plantasya mobile application.
+
+Whether you are caring for your very first indoor houseplant or maintaining a
+diverse collection of tropical plants, Plantasya simplifies plant identification,
+care task tracking, reminder scheduling, and botanical learning.
+
+No previous technical or IT experience is needed to read and follow this manual.
+Every chapter includes plain-language descriptions, clear layout diagrams, tabular
+guides, and step-by-step procedures.
+
+================================================================================
+CHAPTER 1: INTRODUCTION TO PLANTASYA
+================================================================================
+1.1 Application Purpose & Core Mission:
+Plantasya is an intelligent mobile plant care management system designed for
+Android smartphones. The application serves three key functions:
+1. Instant AI Plant Recognition: Identifies plant species in under a second using
+   your phone's camera and built-in artificial intelligence.
+2. Automated Plant Care Scheduling: Calculates tailored watering, fertilizing,
+   leaf dusting, and soil check schedules based on plant species.
+3. Interactive Botanical Education: Provides comprehensive care guidelines, pet
+   toxicity advisories, height ranges, space footprint requirements, and
+   interactive 3D models.
+
+1.2 Target Audience & User Profiles:
+* Homeowners & Apartment Dwellers: Keep indoor house plants healthy without
+  forgetting care routines.
+* Pet Owners: Quickly verify if a house plant is safe or toxic to cats and dogs.
+* Beginner Gardeners: Access clear, simple guidelines on light, humidity,
+  temperature, and soil needs.
+* Plant Collectors: Build a digital catalog of owned plants and maintain an
+  activity log of all scanned plants.
+
+1.3 Key Features Summary:
+* AI Camera Scanner: On-device TensorFlow Lite classification for offline plant
+  identification.
+* Personal Dashboard: Carousel display showing all owned plants and active daily
+  care tasks.
+* Task Generator & Alarm System: Automatically schedules care tasks and triggers
+  exact Android alarm notifications.
+* Botanical Encyclopedia: Searchable catalog with care specifications for
+  pre-loaded plant species.
+* Interactive 3D Model Viewer: Real-time 3D plant models with 360-degree touch
+  rotation, zoom, and panning.
+* Scan History Log: Stores photos, dates, times, and species names for every
+  scanned plant.
+
+================================================================================
+CHAPTER 2: SYSTEM REQUIREMENTS & DEVICE PERMISSIONS
+================================================================================
+2.1 Hardware and Software Requirements:
+* Operating System: Android 8.0 (Oreo / API Level 26) or higher.
+* Camera: Rear camera with autofocus capability.
+* Internal Storage: Minimum 150 MB free space.
+* Screen Display: HD Resolution (720p or higher) recommended.
+
+2.2 Permissions Guide:
+- CAMERA: Requested on opening AI Scanner. Required to capture live photos.
+- READ_MEDIA_IMAGES / READ_EXTERNAL_STORAGE: Requested in Profile Setup.
+  Required to load custom avatars from photo gallery.
+- POST_NOTIFICATIONS (Android 13+): Requested on first launch. Displays push
+  notification care alerts.
+- SCHEDULE_EXACT_ALARM (Android 12+): System prompt. Triggers precise care alarms.
+
+2.3 Granting Permissions Step-by-Step:
+1. Notifications: Tap "Allow" when prompted on first launch.
+2. Exact Alarms: On Android 12+, tap "Settings" on the prompt dialog, enable the
+   switch for Plantasya, and return.
+3. Camera: Tap "While using the app" when opening scanner for the first time.
+
+================================================================================
+CHAPTER 3: ACCOUNT CREATION, LOGIN & SESSION MANAGEMENT
+================================================================================
+3.1 Application Splash Screen & Launch:
+When Plantasya is opened, a dark splash screen displays the pulsing logo for
+3 seconds while initializing local databases. Logged-in users are navigated
+directly to the Dashboard.
+
+3.2 Landing Screen Navigation:
+New or logged-out users can select either LOG IN or SIGN UP.
+
+3.3 Registering a New Account:
+1. Tap SIGN UP on Landing Screen.
+2. Enter a unique Username.
+3. Enter Password and Confirm Password.
+4. Tap SIGN UP to proceed to Profile Setup.
+
+3.4 Profile Setup:
+1. Tap circular avatar frame to choose a photo from gallery.
+2. Enter Display Name (e.g., "Maria Gardener").
+3. Tap SAVE PROFILE to complete registration.
+
+3.5 Logging In:
+1. Tap LOG IN on Landing Screen.
+2. Enter Username and Password.
+3. Tap LOG IN.
+
+3.6 Session Persistence:
+Your session remains saved across app restarts and phone reboots until you select
+Log Out.
+
+3.7 Changing Credentials:
+Go to Profile > Settings > Change Credentials. Enter current credentials and new
+desired credentials, then tap SAVE CHANGES.
+
+3.8 Logging Out:
+Go to Profile > Settings > Log Out. Tap YES on confirmation.
+
+3.9 Account Deletion:
+Go to Profile > Settings > Delete Account. Tap DELETE on the warning prompt.
+All profile data, saved plants, history, and active alarms are permanently erased.
+
+================================================================================
+CHAPTER 4: MAIN DASHBOARD & DAILY PLANT CARE SCHEDULING
+================================================================================
+4.1 Dashboard Layout:
+- Top: OWNED PLANTS carousel header and avatar.
+- Center: 3D animated visual carousel showing cards for owned plants.
+- Bottom: Dynamic daily care tasks list corresponding to selected plant.
+- Action: Green + ADD PLANT button.
+
+4.2 Carousel Navigation:
+Swipe left or right across the top carousel to view different plants. The task list
+below updates instantly to show tasks for the active plant.
+
+4.3 Empty State:
+If no plants are owned, tap + ADD PLANT and choose SCAN PLANT or CHOOSE FROM
+LIBRARY.
+
+4.4 Automated Task Generation:
+Adding a plant creates automatic species-specific care schedules (e.g.,
+Watering, Fertilizing, Leaf Cleaning).
+
+4.5 Completing Tasks:
+Tap the checkbox on a task card to mark it as done for the day.
+
+4.6 Custom Reminders:
+Tap the Clock Icon next to any task. Select Date and Time to schedule a custom
+alarm.
+
+4.7 Android Alarm Notifications:
+Plantasya registers exact system alarms. Alarms ring even when the app is closed or
+the screen is off. Reboots automatically restore all scheduled reminders.
+
+================================================================================
+CHAPTER 5: AI PLANT IDENTIFICATION & CAMERA SCANNING
+================================================================================
+5.1 On-Device TensorFlow Lite Model:
+Runs offline machine learning inference directly on device with a 75% minimum
+confidence filter.
+
+5.2 Opening Scanner:
+Tap + ADD PLANT > SCAN PLANT or tap floating camera button in History tab.
+
+5.3 Framing & Lighting:
+Ensure clear natural indoor lighting. Hold camera 1 to 2 feet away from plant leaves.
+
+5.4 Capture Process:
+Align leaves in center frame overlay and tap the circular Capture Button.
+
+5.5 Scan Results:
+Select "YES, I OWN THIS PLANT" to save to dashboard and schedule care tasks, or
+"NO, JUST SEARCHING" to log in history only.
+
+5.6 Low Confidence Scans:
+If confidence is below 75%, result shows "Unknown Plant" with a "TRY SCANNING AGAIN"
+button.
+
+================================================================================
+CHAPTER 6: BOTANICAL PLANT LIBRARY & CATALOG
+================================================================================
+6.1 Catalog Access:
+Tap Library tab on bottom navigation bar.
+
+6.2 Search Bar:
+Type plant name or scientific name for instant filtering.
+
+6.3 Alphabetical Indexing:
+Organized under A-Z alphabetical section headers.
+
+6.4 Plant Profiles:
+Select any plant to view description, light, water, humidity, temperature, soil,
+fertilizer, toxicity, height, footprint, and variations.
+
+6.5 External Web Search:
+Tapping variation names opens an external web search prompt.
+
+================================================================================
+CHAPTER 7: INTERACTIVE 3D PLANT MODEL VIEWER
+================================================================================
+7.1 Google Filament Engine:
+Provides high-fidelity 3D rendering with studio lighting.
+
+7.2 Opening 3D View:
+Tap VIEW INTERACTIVE 3D MODEL on plant detail pages.
+
+7.3 Gesture Controls:
+- Single Finger Drag: Rotate 360 degrees.
+- Pinch / Spread: Zoom in / out.
+- Two Finger Drag: Pan camera view.
+
+7.4 Studio Lighting:
+10-point studio lighting setup eliminates dark spots during 360 rotation.
+
+7.5 Gesture Guide:
+Tap "GOT IT!" to clear overlay instructions.
+
+================================================================================
+CHAPTER 8: SCAN HISTORY & ACTIVITY LOGGING
+================================================================================
+8.1 History Overview:
+Chronological log of all scanned plants.
+
+8.2 History Entries:
+Displays snapshot photo, plant name, timestamp, and ownership heart icon.
+
+8.3 Ownership Conversion:
+Tap hollow heart icon to add past scan to dashboard, or filled heart icon to remove.
+
+================================================================================
+CHAPTER 9: PROFILE CUSTOMIZATION & ONBOARDING
+================================================================================
+9.1 Profile Tab:
+Shows user avatar, display name, username, and admin buttons.
+
+9.2 App Tutorial:
+Tap Profile > App Tutorial to launch full-screen swipeable onboarding guide.
+
+9.3 About App:
+Tap Profile > About App to view version 1.0.0 credits and details.
+
+================================================================================
+CHAPTER 10: STEP-BY-STEP OPERATING PROCEDURES (10 WORKFLOWS)
+================================================================================
+WORKFLOW 1: Registration & Setup
+1. Open App > Tap SIGN UP.
+2. Enter Username and Password > Tap SIGN UP.
+3. Select Avatar photo > Enter Display Name > Tap SAVE PROFILE.
+
+WORKFLOW 2: Scanning a Plant
+1. Tap Dashboard > + ADD PLANT > SCAN PLANT.
+2. Frame plant in daylight > Tap Capture Button.
+3. Tap "YES, I OWN THIS PLANT".
+
+WORKFLOW 3: Adding Plant from Library
+1. Open Library > Search plant name.
+2. Tap plant card > Tap Hollow Heart Icon.
+
+WORKFLOW 4: Setting Care Alarms
+1. Open Dashboard > Select plant card.
+2. Tap Clock Icon next to task > Pick Date and Time > Tap OK.
+
+WORKFLOW 5: 3D Model Inspection
+1. Open Library > Select plant > Tap VIEW INTERACTIVE 3D MODEL.
+2. Tap "GOT IT!" > Drag single finger to rotate in 3D.
+
+WORKFLOW 6: Converting Scans in History
+1. Tap History tab > Locate scan item > Tap Hollow Heart Icon.
+
+WORKFLOW 7: Changing Credentials
+1. Tap Profile > Settings > Change Credentials.
+2. Enter current credentials, enter new credentials > Tap SAVE CHANGES.
+
+WORKFLOW 8: Removing an Owned Plant
+1. Open Library > Select owned plant > Tap Filled Heart Icon > Tap REMOVE.
+
+WORKFLOW 9: Inspecting Pet Toxicity
+1. Open Library > Search plant > Open details > Check Toxicity line item.
+
+WORKFLOW 10: Deleting Account
+1. Tap Profile > Settings > Delete Account > Tap DELETE.
+
+================================================================================
+CHAPTER 11: COMPLETE BOTANICAL CATALOG REFERENCE GUIDE
+================================================================================
+1. AGLAONEMA (Aglaonema commutatum)
+   Description: Glossy patterned leaves; low-maintenance.
+   Light: Low to bright indirect. Water: Allow top 1-2 inches to dry.
+   Humidity: Moderate. Temp: 65-80 F. Soil: Well-draining with perlite.
+   Fertilizer: Monthly. Toxicity: Toxic to pets. Height: 1-3 ft. Compact footprint.
+
+2. POTHOS (Epipremnum aureum)
+   Description: Fast-growing trailing vine with heart-shaped leaves.
+   Light: Low to bright indirect. Water: Allow top 2 inches to dry.
+   Humidity: Average. Temp: 65-85 F. Soil: All-purpose potting mix.
+   Fertilizer: Monthly. Toxicity: Toxic to pets. Height: Trailing 6-10 ft.
+
+3. CALATHEA (Calathea spp.)
+   Description: Patterned foliage with daily leaf movement.
+   Light: Low to medium indirect. Water: Keep evenly moist.
+   Humidity: High. Temp: 65-80 F. Soil: Organic rich, slightly acidic.
+   Fertilizer: Monthly. Toxicity: Non-toxic to pets. Height: 1-2 ft.
+
+4. MONEY TREE (Pachira aquatica)
+   Description: Braided trunk tree symbolizing good luck.
+   Light: Bright indirect. Water: Water when top 2-3 inches dry.
+   Humidity: Moderate. Temp: 65-80 F. Soil: Well-draining moisture retentive.
+   Fertilizer: Every 4-6 weeks. Toxicity: Non-toxic to pets. Height: 3-6 ft.
+
+5. ORCHID (Phalaenopsis)
+   Description: Epiphytic orchid with long-lasting showy blooms.
+   Light: Bright indirect. Water: Every 7-10 days.
+   Humidity: 50-70%. Temp: 60-80 F. Soil: Chunky orchid bark mix.
+   Fertilizer: Every 2-4 weeks. Toxicity: Non-toxic to pets. Height: 8-24 in.
+
+6. PARLOR PALM (Chamaedorea elegans)
+   Description: Graceful slow-growing palm tree.
+   Light: Low to medium indirect. Water: Keep evenly moist.
+   Humidity: Moderate. Temp: 65-80 F. Soil: Well-draining organic rich.
+   Fertilizer: Monthly. Toxicity: Non-toxic to pets. Height: 2-6 ft.
+
+7. ZZ PLANT (Zamioculcas zamiifolia)
+   Description: Glossy upright stems; highly durable.
+   Light: Low to bright indirect. Water: Drought tolerant; dry completely.
+   Humidity: Average. Temp: 65-85 F. Soil: Cactus/succulent mix.
+   Fertilizer: Every 6-8 weeks. Toxicity: Toxic if ingested. Height: 1-3 ft.
+
+8. PEACE LILY (Spathiphyllum spp.)
+   Description: Deep green foliage with white spathe blooms.
+   Light: Low to bright indirect. Water: Keep lightly moist.
+   Humidity: Moderate to high. Temp: 65-85 F. Soil: Rich well-draining soil.
+   Fertilizer: 3 times per year. Toxicity: Mildly toxic to pets. Height: 1-4 ft.
+
+9. SNAKE PLANT (Dracaena trifasciata)
+   Description: Architectural vertical sword-like leaves.
+   Light: Low light to direct sun. Water: Allow to dry completely.
+   Humidity: Low to moderate. Temp: 60-85 F. Soil: Coarse succulent mix.
+   Fertilizer: Monthly. Toxicity: Toxic to pets. Height: 1-4 ft.
+
+10. DRACAENA (Dracaena spp.)
+    Description: Tropical tree with strap-like foliage on woody canes.
+    Light: Medium to bright indirect. Water: Allow top 1-2 inches to dry.
+    Humidity: Moderate. Temp: 65-80 F. Soil: Well-draining organic rich.
+    Fertilizer: Monthly. Toxicity: Toxic to pets. Height: 2-10 ft.
+
+================================================================================
+CHAPTER 12: TROUBLESHOOTING, FAQS & MAINTENANCE
+================================================================================
+Troubleshooting:
+- AI Camera says "Unknown Plant": Move 1-2 ft closer under bright lighting.
+- Reminders not ringing: Enable Notifications and Exact Alarms in phone settings.
+- Avatar upload fails: Select PNG or JPEG image under 10 MB in size.
+
+FAQs:
+1. Is internet required? No, Plantasya operates completely offline.
+2. Will restarting my phone erase data? No, all data is saved in Room database.
+3. Is Plantasya pet safe? Yes, all plants feature pet toxicity warnings.
+
+================================================================================
+End of User Manual - Plantasya Mobile Application Version 1.0.0
+================================================================================

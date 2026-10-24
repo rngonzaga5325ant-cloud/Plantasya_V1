@@ -86,7 +86,7 @@ object TaskScheduler {
         }
     }
 
-    private fun calculateNextTime(frequency: String?): Long {
+    fun calculateNextTime(frequency: String?): Long {
         val calendar = Calendar.getInstance()
         
         when (frequency?.lowercase()) {

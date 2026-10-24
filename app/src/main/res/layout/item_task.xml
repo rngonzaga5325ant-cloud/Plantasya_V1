@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layoutTaskContainer"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="2dp"
-    android:gravity="center_vertical">
+    android:padding="8dp"
+    android:layout_marginVertical="2dp"
+    android:gravity="center_vertical"
+    android:background="@drawable/bg_rounded">
 
     <com.google.android.material.checkbox.MaterialCheckBox
         android:id="@+id/cbTask"
@@ -37,5 +40,19 @@
             android:textColor="#666666"
             android:textSize="14sp" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvOverdueBadge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="OVERDUE"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="4dp"
+        android:background="#D32F2F"
+        android:visibility="gone"
+        android:layout_marginStart="8dp"/>
 
 </LinearLayout>
